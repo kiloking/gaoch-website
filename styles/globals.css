@@ -19,3 +19,29 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.clip-path-hexagon {
+  clip-path: polygon(
+    25% 0%,
+    75% 0%,
+    100% 43.3%,
+    75% 86.6%,
+    25% 86.6%,
+    0% 43.3%
+  );
+}
+
+.clip-path-hexagon-flat {
+  clip-path: polygon(
+    50% 0%,
+    100% 28.87%,
+    100% 71.13%,
+    50% 100%,
+    0% 71.13%,
+    0% 28.87%
+  );
+}
+
+.clip-path-hexagon-flatter {
+  clip-path: polygon(50% 0%, 100% 33%, 100% 67%, 50% 100%, 0% 67%, 0% 33%);
+}

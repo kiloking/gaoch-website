@@ -38,3 +38,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Mac 系統檔案
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
