@@ -1,19 +1,8 @@
 import Layout from "@/components/layouts/Layout";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+
 import VideoBackground from "@/components/shared/VideoBackground";
 import { motion } from "framer-motion";
 export default function Home() {
-  const homeimgs = [
-    "https://web.forestdev.work/gaoch/01.jpg",
-    "https://web.forestdev.work/gaoch/02.jpg",
-    "https://web.forestdev.work/gaoch/03.jpg",
-  ];
   return (
     <Layout>
       <VideoBackground videoId="aNC3UOYOejI" />
