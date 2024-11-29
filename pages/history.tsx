@@ -3,31 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { RELATED_COMPANIES } from "@/constants";
 
 export default function History() {
   const router = useRouter();
-
-  const companies = [
-    {
-      name: "企業名稱 A",
-      description: "專注於建築設計與室內規劃...",
-      year: "2010",
-      business: "建築設計",
-    },
-    {
-      name: "企業名稱 B",
-      description: "提供專業的營建管理服務...",
-      year: "2015",
-      business: "營建管理",
-    },
-    {
-      name: "企業名稱 C",
-      description: "專業的室內設計與裝修服務...",
-      year: "2018",
-      business: "室內設計",
-    },
-    // 可以添加更多企業...
-  ];
 
   return (
     <Layout>
@@ -65,18 +44,35 @@ export default function History() {
                 </Link>
               </div>
               <div className="h-[calc(100vh-200px)] overflow-y-auto pr-4 space-y-6 pt-5">
-                {companies.map((company, index) => (
+                {RELATED_COMPANIES.map((item, index) => (
                   <div
                     key={index}
                     className="bg-white p-6 rounded-lg shadow-lg"
                   >
-                    <h3 className="text-xl font-semibold mb-4">
-                      {company.name}
-                    </h3>
-                    <p className="text-gray-600 mb-4">{company.description}</p>
-                    <div className="text-sm text-gray-500">
-                      <p>成立時間：{company.year}年</p>
-                      <p>主要業務：{company.business}</p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-20 h-20 rounded-md overflow-hidden">
+                        <Image
+                          src={`https://web.forestdev.work/gaoch/company/${item.img}?v=1`}
+                          alt={item.name}
+                          width={100}
+                          height={100}
+                          className="object-cover object-center"
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold ">{item.name}</h3>
+                    </div>
+
+                    <div className="mt-4">
+                      <div className="text-gray-900 font-semibold mb-1">
+                        簡歷：
+                      </div>
+                      <div className="text-gray-600 mb-1">
+                        {item.projects.map((project, index) => (
+                          <p key={index} className="mb-1">
+                            {project}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
