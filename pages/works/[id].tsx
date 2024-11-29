@@ -28,7 +28,7 @@ export default function WorkDetail() {
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div className="flex justify-center items-center w-full bg-zinc-100 h-[720px] bg-cover bg-center bg-no-repeat relative -z-0">
+        <div className="flex justify-center items-center w-full bg-zinc-100 aspect-[15/8] bg-cover bg-center bg-no-repeat relative -z-0">
           <motion.div
             key={currentWork.bgimg}
             initial={{ opacity: 0 }}
