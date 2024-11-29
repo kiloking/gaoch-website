@@ -1,94 +1,39 @@
 import Layout from "@/components/layouts/Layout";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface Work {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  year: string;
-  location: string;
-}
+import { WORKS } from "@/constants/works";
 
 export default function Works() {
-  const [currentCategory, setCurrentCategory] = useState<string>("全部作品");
-  const categories = ["全部作品", "住宅設計", "豪宅設計", "商業設計"];
-
-  const allWorks: Work[] = [
-    {
-      id: 1,
-      title: "高誠帝景",
-      category: "住宅設計",
-      image: "w01s.png",
-      year: "2023",
-      location: "中壢區",
-    },
-    {
-      id: 2,
-      title: "高誠帝景",
-      category: "豪宅設計",
-      image: "w02s.png",
-      year: "2023",
-      location: "中壢區",
-    },
-    {
-      id: 3,
-      title: "高誠帝景",
-      category: "商業設計",
-      image: "w03s.png",
-      year: "2022",
-      location: "中壢區",
-    },
-  ];
-
-  const filteredWorks =
-    currentCategory === "全部作品"
-      ? allWorks
-      : allWorks.filter((work) => work.category === currentCategory);
+  const filteredWorks = WORKS;
 
   return (
     <Layout>
       <div
-        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[88px]"
+        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px]"
         style={{
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-8">精彩力作</h1>
-
-          {/* 作品分類選單 */}
-          <div className="flex gap-6 mb-12 relative">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setCurrentCategory(category)}
-                className={`px-4 py-2 rounded-full transition-colors relative  ${
-                  currentCategory === category
-                    ? "text-white bg-black "
-                    : "hover:bg-gray-300"
-                }`}
-              >
-                {currentCategory === category && (
-                  <motion.div
-                    layoutId="categoryBackground"
-                    className="absolute inset-0 bg-black rounded-full -z-10"
-                    initial={false}
-                    transition={{ type: "spring", duration: 0.6 }}
-                  />
-                )}
-                {category}
-              </button>
-            ))}
+        <div
+          className="flex justify-center items-center w-full bg-zinc-100 h-[300px] bg-cover bg-center bg-no-repeat relative -z-0"
+          style={{
+            backgroundImage: "url(https://web.forestdev.work/gaoch/bg08.jpg)",
+          }}
+        >
+          {/* black 遮罩 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
+          <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
+            Our Works <span className="text-white text-xl"> / 精彩力作</span>
           </div>
+        </div>
+        <div className="container mx-auto px-4 mt-[5%]">
+          {/* 作品分類選單 */}
 
           {/* 作品網格 */}
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-10"
           >
             <AnimatePresence mode="popLayout">
               {filteredWorks.map((work) => (
@@ -100,12 +45,9 @@ export default function Works() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link
-                    href={`/works/${work.id}`}
-                    className="group hover:translate-y-[-10px]"
-                  >
-                    <div className="relative aspect-[35/43] overflow-hidden transform skew-x-[-12deg]">
-                      <div className="absolute inset-0 transform skew-x-[12deg] scale-[1.3] origin-center">
+                  <Link href={`/works/${work.id}`} className="group ">
+                    <div className="relative  transform  border border-black/10 rounded-md  bg-white/20 shadow-lg hover:shadow-xl transition-shadow duration-500">
+                      <div className=" inset-0 transform  scale-[1] origin-center aspect-[14/8] rounded-md overflow-hidden">
                         <Image
                           src={`https://web.forestdev.work/gaoch/works/${work.image}`}
                           alt={work.title}
@@ -113,15 +55,15 @@ export default function Works() {
                           className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                       </div>
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute inset-0 transform skew-x-[12deg] flex flex-col justify-end p-6">
-                          <h3 className="text-white text-xl font-bold mb-2">
+                      <div className="  text-black py-1 px-2  ">
+                        <div className=" transform  flex flex-col justify-end ">
+                          <h3 className="text-black font-bold mb-1">
                             {work.title}
                           </h3>
-                          <div className="text-white/80 text-sm">
-                            <span>{work.category}</span>
-                            <span className="mx-2">|</span>
+                          <div className="text-black/80 text-sm">
                             <span>{work.year}</span>
+                            <span className="mx-2">|</span>
+                            <span>{work.location}</span>
                           </div>
                         </div>
                       </div>

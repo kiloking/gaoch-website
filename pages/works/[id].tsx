@@ -2,167 +2,199 @@ import Layout from "@/components/layouts/Layout";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
-// 作品詳細資料類型
-interface WorkDetail {
-  id: number;
-  title: string;
-  category: string;
-  year: string;
-  location: string;
-  area: string;
-  description: string;
-  images: string[];
-  nextWork?: {
-    id: number;
-    title: string;
-    image: string;
-  };
-  prevWork?: {
-    id: number;
-    title: string;
-    image: string;
-  };
-}
+import { WORKS } from "@/constants/works";
+import { motion } from "framer-motion";
 
 export default function WorkDetail() {
   const router = useRouter();
   const { id } = router.query;
 
-  // 模擬作品詳細資料
-  const workDetail: WorkDetail = {
-    id: Number(id),
-    title: "現代簡約住宅",
-    category: "住宅設計",
-    year: "2023",
-    location: "台北市信義區",
-    area: "180 坪",
-    description:
-      "這是一個強調現代簡約風格的住宅設計專案。運用大量的自然採光和開放空間，創造出舒適寬敞的生活環境。設計重點包括客製化的收納系統、整合式的照明設計，以及精心挑選的建材與家具...",
-    images: [
-      "/images/works/detail-1.jpg",
-      "/images/works/detail-2.jpg",
-      "/images/works/detail-3.jpg",
-      "/images/works/detail-4.jpg",
-    ],
-    nextWork: {
-      id: 2,
-      title: "都會豪宅",
-      image: "/images/works/work-2.jpg",
-    },
-    prevWork: {
-      id: 3,
-      title: "商業空間",
-      image: "/images/works/work-3.jpg",
-    },
-  };
+  // 找到當前作品
+  const currentWork = WORKS.find((work) => work.id === Number(id));
+
+  // 找到前一個和下一個作品
+  const currentIndex = WORKS.findIndex((work) => work.id === Number(id));
+  const prevWork = currentIndex > 0 ? WORKS[currentIndex - 1] : null;
+  const nextWork =
+    currentIndex < WORKS.length - 1 ? WORKS[currentIndex + 1] : null;
+
+  if (!currentWork) return null;
 
   return (
     <Layout>
       <div
-        className=" min-h-screen  bg-cover bg-center bg-no-repeat  pt-[88px]"
+        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px]"
         style={{
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div className="container mx-auto px-4 ">
-          {/* 返回按鈕 */}
-          <Link
-            href="/works"
-            className="inline-flex items-center mb-8 text-gray-600 hover:text-black"
+        <div className="flex justify-center items-center w-full bg-zinc-100 h-[720px] bg-cover bg-center bg-no-repeat relative -z-0">
+          <motion.div
+            key={currentWork.bgimg}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
           >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            返回作品列表
-          </Link>
+            <Image
+              src={`https://web.forestdev.work/gaoch/works/${currentWork.bgimg}`}
+              alt={currentWork.title}
+              fill
+              className="object-cover"
+            />
+          </motion.div>
+          {/* black 遮罩 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-transparent z-10" />
+          <motion.div
+            key={currentWork.id}
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-white  z-20 absolute bottom-8 left-10"
+          >
+            <div className="   ">
+              <div className="text-base mb-1">
+                {currentWork.year} {currentWork.location}
+              </div>
+              <div className="text-5xl font-bold">{currentWork.title}</div>
+              <div className=" h-[1px] w-full bg-white/50 my-4"></div>
+              <div className="max-w-3xl mb-6">
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <h3 className="font-medium text-white">基地位置</h3>
+                    <p>{currentWork.details?.address}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-white">基地面積</h3>
+                    <p>{currentWork.details?.area}</p>
+                  </div>
+                  {currentWork.details?.units && (
+                    <div>
+                      <h3 className="font-medium text-white">戶數規劃</h3>
+                      <p>{currentWork.details.units}</p>
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="font-medium text-white">樓層規劃</h3>
+                    <p>{currentWork.details?.floors}</p>
+                  </div>
+                  {currentWork.details?.houseTypes && (
+                    <div>
+                      <h3 className="font-medium text-white">坪數規劃</h3>
+                      <p>{currentWork.details.houseTypes}</p>
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="font-medium text-white">建築設計</h3>
+                    <p>{currentWork.details?.architect}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-white">施工營造</h3>
+                    <p>{currentWork.details?.constructor}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          <div className="absolute bottom-10 right-10 z-20">
+            <div className="flex gap-4 bg-black/50  rounded-lg p-2">
+              <Link
+                href="/works"
+                className="inline-flex items-center  text-white/80 hover:text-white "
+              >
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                返回作品列表
+              </Link>
+              {/* Next  if no next, hide */}
 
-          {/* 作品標題資訊 */}
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">{workDetail.title}</h1>
-            <div className="flex gap-6 text-gray-600">
-              <span>類別：{workDetail.category}</span>
-              <span>年份：{workDetail.year}</span>
-              <span>地點：{workDetail.location}</span>
-              <span>面積：{workDetail.area}</span>
+              {/* Prev */}
+              {prevWork && (
+                <Link
+                  href={`/works/${prevWork?.id}`}
+                  className="inline-flex items-center  text-white/80 hover:text-white "
+                >
+                  上一個作品
+                </Link>
+              )}
+              {nextWork && (
+                <Link
+                  href={`/works/${nextWork?.id}`}
+                  className="inline-flex items-center  text-white/80 hover:text-white "
+                >
+                  下一個作品
+                </Link>
+              )}
             </div>
           </div>
+        </div>
+        <div className="container mx-auto px-4 mt-[5%]">
+          {/* YouTube 影片 */}
+          {currentWork.ytVideoUrl && (
+            <div className="w-full mb-16">
+              <h2 className="text-2xl font-bold mb-4">建案影片</h2>
+              <div className="aspect-video">
+                <iframe
+                  src={currentWork.ytVideoUrl.replace("watch?v=", "embed/")}
+                  className="w-full h-full"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
 
           {/* 主要圖片 */}
           <div className="relative aspect-video mb-12">
             <Image
-              src={workDetail.images[0]}
-              alt={workDetail.title}
+              src={`https://web.forestdev.work/gaoch/works/${currentWork.image}`}
+              alt={currentWork.title}
               fill
               className="object-cover"
             />
           </div>
 
-          {/* 專案說明 */}
-          <div className="max-w-3xl mb-16">
-            <h2 className="text-2xl font-bold mb-4">專案說明</h2>
-            <p className="text-gray-600 leading-relaxed">
-              {workDetail.description}
-            </p>
-          </div>
-
-          {/* 其他圖片網格 */}
-          <div className="grid grid-cols-2 gap-8 mb-16">
-            {workDetail.images.slice(1).map((image, index) => (
-              <div key={index} className="relative aspect-[4/3]">
-                <Image
-                  src={image}
-                  alt={`${workDetail.title} ${index + 2}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
           {/* 上一個/下一個作品 */}
           <div className="grid grid-cols-2 gap-8">
-            {workDetail.prevWork && (
-              <Link href={`/works/${workDetail.prevWork.id}`} className="group">
+            {prevWork && (
+              <Link href={`/works/${prevWork.id}`} className="group">
                 <div className="relative aspect-[3/2] mb-4">
                   <Image
-                    src={workDetail.prevWork.image}
-                    alt={workDetail.prevWork.title}
+                    src={`https://web.forestdev.work/gaoch/works/${prevWork.image}`}
+                    alt={prevWork.title}
                     fill
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
                 </div>
                 <div className="text-sm text-gray-500 mb-2">上一個作品</div>
-                <div className="font-bold">{workDetail.prevWork.title}</div>
+                <div className="font-bold">{prevWork.title}</div>
               </Link>
             )}
-            {workDetail.nextWork && (
-              <Link
-                href={`/works/${workDetail.nextWork.id}`}
-                className="group text-right"
-              >
+            {nextWork && (
+              <Link href={`/works/${nextWork.id}`} className="group text-right">
                 <div className="relative aspect-[3/2] mb-4">
                   <Image
-                    src={workDetail.nextWork.image}
-                    alt={workDetail.nextWork.title}
+                    src={`https://web.forestdev.work/gaoch/works/${nextWork.image}`}
+                    alt={nextWork.title}
                     fill
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
                 </div>
                 <div className="text-sm text-gray-500 mb-2">下一個作品</div>
-                <div className="font-bold">{workDetail.nextWork.title}</div>
+                <div className="font-bold">{nextWork.title}</div>
               </Link>
             )}
           </div>

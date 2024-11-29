@@ -94,7 +94,7 @@ const Navbar = () => {
           )}
         </div>
       ) : (
-        <div className="z-20 absolute top-0  bg-black/0 w-full flex items-center justify-between   px-10 pt-8 pb-6 space-x-10 group/navbarC">
+        <div className="z-20 absolute top-0  bg-black/0 w-full flex items-center justify-between   px-8 pt-4 pb-6 space-x-10 group/navbarC">
           {type === "home" && (
             <div className="w-full h-full absolute top-0 left-0 bg-gradient-to-b via-black/30 from-black/50 transition-all opacity-0 group-hover/navbarC:opacity-100 -z-10 pointer-events-none"></div>
           )}
@@ -119,19 +119,22 @@ const Navbar = () => {
           </Link>
 
           <ul
-            className={`flex flex-center w-full space-x-10 justify-end   ${
+            className={`flex flex-center w-[80%] justify-center space-x-10  bg-white/10  border-b border-white/30 rounded-full backdrop-blur-md  ${
               type === "home" ? "text-white " : " text-black "
             } `}
+            style={{
+              boxShadow: "2px 5px 10px 2px rgba(0, 0, 0, 0.3)",
+            }}
           >
             {frontNavLinks.map((item, index) => {
               const whiteTextPages = ["home", "brand", "history"];
               return (
                 <li
                   key={`navtitle` + index}
-                  className={`group relative dropdown ${
+                  className={`group relative dropdown px-4 py-2 ${
                     whiteTextPages.includes(type)
-                      ? "text-white/80"
-                      : "text-black"
+                      ? "text-white/70"
+                      : "text-white/70"
                   }`}
                 >
                   <a
@@ -139,7 +142,7 @@ const Navbar = () => {
                     className={`${
                       type === "home"
                         ? "hover:text-white "
-                        : " hover:text-black "
+                        : " hover:text-white "
                     } `}
                   >
                     {item.label}

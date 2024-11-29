@@ -93,14 +93,25 @@ export default function Projects() {
   return (
     <Layout>
       <div
-        className=" min-h-screen  bg-cover bg-center bg-no-repeat  pt-[88px]"
+        className=" min-h-screen  bg-cover bg-center bg-no-repeat  pt-[0px]"
         style={{
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div className="container mx-auto px-4 ">
+        <div
+          className="flex justify-center items-center w-full bg-zinc-100 h-[300px] bg-cover bg-center bg-no-repeat relative -z-0"
+          style={{
+            backgroundImage: "url(https://web.forestdev.work/gaoch/bg08.jpg)",
+          }}
+        >
+          {/* black 遮罩 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
+          <div className="text-white/80 text-3xl font-bold z-20 absolute bottom-10 left-10">
+            新案鑑賞 / Project
+          </div>
+        </div>
+        <div className="container mx-auto px-4 mt-[5%]">
           {/* 頁面標題 */}
-          <h1 className="text-4xl font-bold mb-12">新案鑑賞</h1>
 
           {/* 專案狀態篩選 */}
           <div className="flex gap-6 mb-12">
