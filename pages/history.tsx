@@ -61,6 +61,18 @@ export default function History() {
                       </div>
                       <h3 className="text-xl font-semibold ">{item.name}</h3>
                     </div>
+                    <div className="mt-4">
+                      <div className="text-gray-900 font-semibold mb-1">
+                        學歷：
+                      </div>
+                      <div className="text-gray-600 mb-1">
+                        {item.educational.map((item, index) => (
+                          <p key={index} className="mb-1">
+                            {item}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
 
                     <div className="mt-4">
                       <div className="text-gray-900 font-semibold mb-1">

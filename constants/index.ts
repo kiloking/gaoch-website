@@ -32,7 +32,7 @@ export const RELATED_COMPANIES = [
   {
     name: "康文在建築師事務所",
     img: "kong.jpg",
-    educational: "逢甲大學建築系畢業",
+    educational: ["逢甲大學建築系"],
     projects: [
       "大矩聯合建築師事務所",
       "亞洲聯合建築師事務所",
@@ -44,7 +44,7 @@ export const RELATED_COMPANIES = [
   {
     name: "林國棟建築師事務所",
     img: "lin.jpg",
-    educational: "國立台北科技大學建築及都市計畫研究所",
+    educational: ["國立台北科技大學建築及都市計畫研究所"],
     projects: [
       "羅興華建築師事務所",
       "沈祖海建築師事務所",
