@@ -1,5 +1,7 @@
 import Layout from "@/components/layouts/Layout";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, FormEvent } from "react";
+import { api } from "@/utils/api";
+import { toast } from "sonner";
 
 interface RepairForm {
   type: "公設" | "非公設";
@@ -7,7 +9,7 @@ interface RepairForm {
   contactName: string;
   phone: string;
   content: string;
-  images: File[];
+  images: number;
   date: string;
 }
 interface ContactInfo {
@@ -24,32 +26,49 @@ export default function Contact() {
     contactName: "",
     phone: "",
     content: "",
-    images: [],
+    images: 0,
     date: new Date().toISOString().split("T")[0], // 自動帶入今天日期
   });
 
-  // 處理圖片上傳
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length + formData.images.length > 2) {
-      alert("最多只能上傳兩張圖片");
-      return;
-    }
-    setFormData({ ...formData, images: [...formData.images, ...files] });
-  };
-
-  // 移除圖片
-  const removeImage = (index: number) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
-    });
-  };
+  const { mutate: createRepair, isLoading } = api.repair.create.useMutation({
+    onSuccess: () => {
+      toast("維修單建立成功，我們會盡快處理您的維修需求", {
+        position: "top-center",
+      });
+      // 重置表單
+      setFormData({
+        type: "公設",
+        unit: "",
+        contactName: "",
+        phone: "",
+        content: "",
+        images: 0,
+        date: new Date().toISOString().split("T")[0],
+      });
+    },
+    onError: () => {
+      toast("提交失敗，請稍後再試", {
+        position: "top-center",
+      });
+    },
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // 這裡處理表單提交邏輯
-    console.log(formData);
+
+    try {
+      await createRepair({
+        type: formData.type,
+        unit: formData.unit,
+        contactName: formData.contactName,
+        phone: formData.phone,
+        content: formData.content,
+        date: formData.date,
+      });
+    } catch {
+      // 錯誤已經在 onError callback 中處理
+      console.error("提交失敗");
+    }
   };
 
   // 聯絡資訊 state
@@ -295,35 +314,15 @@ export default function Contact() {
                 {/* 圖片上傳 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    上傳圖片（最多2張）
+                    上傳圖片（最多2張）(尚未實作)
                   </label>
                   <input
                     type="file"
                     accept="image/*"
+                    disabled
                     multiple
-                    onChange={handleImageUpload}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-                    disabled={formData.images.length >= 2}
                   />
-                  {/* 預覽圖片 */}
-                  <div className="mt-2 flex gap-2">
-                    {formData.images.map((image, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt={`Preview ${index + 1}`}
-                          className="w-24 h-24 object-cover rounded"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 {/* 填單日期 */}
@@ -341,9 +340,10 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                  disabled={isLoading}
+                  className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  送出報修
+                  {isLoading ? "處理中..." : "送出報修"}
                 </button>
               </form>
             </div>

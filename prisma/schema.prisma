@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Repair {
+  id          Int      @id @default(autoincrement())
+  type        String   // 公設 or 非公設
+  unit        String   // 戶別
+  contactName String   // 聯絡人
+  phone       String   // 聯絡電話
+  content     String   // 維修內容
+  date        String   // 填單日期
+  status      String   @default("待處理") // 維修單狀態
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
