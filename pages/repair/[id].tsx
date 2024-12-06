@@ -13,7 +13,12 @@ export default function RepairDetail() {
     }
   );
 
-  if (isLoading) return <div>載入中...</div>;
+  if (isLoading)
+    return (
+      <div className=" flex justify-center items-center text-black">
+        載入中...
+      </div>
+    );
   if (!repair) return <div>找不到此維修單</div>;
 
   return (
