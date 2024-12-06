@@ -11,6 +11,10 @@ export const frontNavLinks = [
         label: "關係企業",
         route: "/history",
       },
+      {
+        label: "協力廠商",
+        route: "/partners",
+      },
     ],
   },
   {
@@ -29,6 +33,27 @@ export const frontNavLinks = [
 
 // 合作關係建築師或企業
 export const RELATED_COMPANIES = [
+  {
+    name: "OOXX股份有限公司",
+    img: "kong.jpg",
+    educational: [""],
+    projects: [""],
+  },
+  {
+    name: "OOXX股份有限公司",
+    img: "lin.jpg",
+    educational: [""],
+    projects: [""],
+  },
+  {
+    name: "OOXX股份有限公司",
+    img: "bo.jpg",
+    educational: [""],
+    projects: [""],
+  },
+];
+
+export const RELATED_PARTNERS = [
   {
     name: "康文在建築師事務所",
     img: "kong.jpg",
@@ -51,5 +76,11 @@ export const RELATED_COMPANIES = [
       "君行室內裝修有限公司",
       "林國棟建築師事務所",
     ],
+  },
+  {
+    name: "柏恩設計團隊",
+    img: "bo.jpg",
+    educational: [""],
+    projects: [""],
   },
 ];

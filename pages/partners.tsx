@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { RELATED_COMPANIES } from "@/constants";
+import { RELATED_PARTNERS } from "@/constants";
 
-export default function History() {
+export default function Partners() {
   const router = useRouter();
 
   return (
@@ -54,7 +54,7 @@ export default function History() {
                 </Link>
               </div>
               <div className="h-[calc(100vh-200px)] overflow-y-auto pr-4 space-y-6 pt-5">
-                {RELATED_COMPANIES.map((item, index) => (
+                {RELATED_PARTNERS.map((item, index) => (
                   <div
                     key={index}
                     className="bg-white p-6 rounded-lg shadow-lg"
@@ -62,7 +62,7 @@ export default function History() {
                     <div className="flex items-center gap-4">
                       <div className="w-20 h-20 rounded-md overflow-hidden">
                         <Image
-                          src={`https://web.forestdev.work/gaoch/02.jpg`}
+                          src={`https://web.forestdev.work/gaoch/company/${item.img}?v=1`}
                           alt={item.name}
                           width={100}
                           height={100}
@@ -73,12 +73,25 @@ export default function History() {
                     </div>
                     <div className="mt-4">
                       <div className="text-gray-900 font-semibold mb-1">
-                        簡歷
+                        學歷：
                       </div>
                       <div className="text-gray-600 mb-1">
                         {item.educational.map((item, index) => (
                           <p key={index} className="mb-1">
                             {item}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <div className="text-gray-900 font-semibold mb-1">
+                        簡歷：
+                      </div>
+                      <div className="text-gray-600 mb-1">
+                        {item.projects.map((project, index) => (
+                          <p key={index} className="mb-1">
+                            {project}
                           </p>
                         ))}
                       </div>

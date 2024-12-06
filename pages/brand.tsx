@@ -38,6 +38,16 @@ export default function Brand() {
                 >
                   關係企業
                 </Link>
+                <Link
+                  href="/partners"
+                  className={`relative pb-2 ${
+                    router.pathname === "/partners"
+                      ? "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-red-500"
+                      : ""
+                  }`}
+                >
+                  協力廠商
+                </Link>
               </div>
               <div className="pt-10">
                 <div className="text-[#04C798] text-xl font-bold">
