@@ -45,4 +45,18 @@ export const repairRouter = createTRPCRouter({
       orderBy: { createdAt: "desc" },
     });
   }),
+
+  updateStatus: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        status: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.repair.update({
+        where: { id: input.id },
+        data: { status: input.status },
+      });
+    }),
 });

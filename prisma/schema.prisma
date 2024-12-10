@@ -25,3 +25,34 @@ model Repair {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Work {
+  id          Int      @id @default(autoincrement())
+  title       String
+  images      Image[] @relation("WorkImages")
+  imageId     Int
+  bgimg       Image   @relation(fields: [imageId], references: [id])
+  year        String
+  location    String
+  description String
+  ytVideoUrl  String
+  address     String
+  area        String
+  units       String
+  floors      String
+  houseTypes  String
+  architect   String
+  company     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workImages  Work[]     @relation("WorkImages")
+  workBgimg   Work[]     
+}
+
