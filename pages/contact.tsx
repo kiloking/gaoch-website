@@ -1,7 +1,8 @@
 import Layout from "@/components/layouts/Layout";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef } from "react";
 import { api } from "@/utils/api";
 import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface RepairForm {
   type: "公設" | "非公設";
@@ -53,8 +54,22 @@ export default function Contact() {
     },
   });
 
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isVerified, setIsVerified] = useState(false);
+
+  const handleRecaptchaChange = (token: string | null) => {
+    setIsVerified(!!token);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!isVerified) {
+      toast("請完成人機驗證", {
+        position: "top-center",
+      });
+      return;
+    }
 
     try {
       await createRepair({
@@ -65,8 +80,11 @@ export default function Contact() {
         content: formData.content,
         date: formData.date,
       });
+
+      // 重置 reCAPTCHA
+      recaptchaRef.current?.reset();
+      setIsVerified(false);
     } catch {
-      // 錯誤已經在 onError callback 中處理
       console.error("提交失敗");
     }
   };
@@ -154,7 +172,7 @@ export default function Contact() {
                       />
                     </svg>
                     <div>
-                      <h3 className="font-medium">電話</h3>
+                      <h3 className="font-medium">��話</h3>
                       <p className="text-gray-600">{contactInfo.phone}</p>
                     </div>
                   </div>
@@ -221,7 +239,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* 右側：報修表單 */}
+            {/* 右側：報修表�� */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <h2 className="text-2xl font-bold mb-6">線上報修</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -338,9 +356,18 @@ export default function Contact() {
                   />
                 </div>
 
+                {/* 在送出按鈕前添加 reCAPTCHA */}
+                <div className="flex justify-center">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    onChange={handleRecaptchaChange}
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !isVerified}
                   className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "處理中..." : "送出報修"}
