@@ -230,7 +230,7 @@ export function RepairList() {
                         }
                         className="text-gray-600 hover:text-gray-900"
                       >
-                        ���印
+                        列印
                       </button>
                     </td>
                   </tr>
