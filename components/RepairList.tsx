@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -10,13 +10,25 @@ import {
 import { api } from "@/utils/api";
 import { toast } from "sonner";
 
+type Repair = {
+  id: number;
+  type: string;
+  unit: string;
+  contactName: string;
+  phone: string;
+  content: string;
+  date: string;
+  status: string;
+  updatedAt: Date;
+};
+
 export function RepairList() {
-  const [selectedRepair, setSelectedRepair] = useState<any>(null);
+  const [selectedRepair, setSelectedRepair] = useState<Repair | null>(null);
   const [editStatus, setEditStatus] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
 
   const utils = api.useUtils();
-  const { data: repairs, isLoading } = api.repair.getAll.useQuery();
+  const { data: repairsData, isLoading } = api.repair.getAll.useQuery();
   const { mutate: updateStatus } = api.repair.updateStatus.useMutation({
     onSuccess: () => {
       toast("狀態更新成功");
@@ -36,12 +48,16 @@ export function RepairList() {
     }
   };
 
-  const filteredRepairs = repairs?.filter(
-    (repair) =>
-      repair.unit.includes(searchTerm) ||
-      repair.contactName.includes(searchTerm) ||
-      repair.content.includes(searchTerm) ||
-      repair.id.toString().includes(searchTerm)
+  const filteredRepairs = useMemo(
+    () =>
+      repairsData?.filter(
+        (repair) =>
+          repair.unit.includes(searchTerm) ||
+          repair.contactName.includes(searchTerm) ||
+          repair.content.includes(searchTerm) ||
+          repair.id.toString().includes(searchTerm)
+      ),
+    [repairsData, searchTerm]
   );
 
   return (
@@ -214,7 +230,7 @@ export function RepairList() {
                         }
                         className="text-gray-600 hover:text-gray-900"
                       >
-                        列印
+                        ���印
                       </button>
                     </td>
                   </tr>

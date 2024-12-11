@@ -1,11 +1,9 @@
 import { withAuth } from "@/components/withAuth";
 import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from "next/router";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [currentMenu, setCurrentMenu] = useState("repair"); // repair, sales, newCase
 
   const menuItems = [
     { id: "repair", name: "報修管理", path: "/dashboard/" },
