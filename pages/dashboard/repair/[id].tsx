@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import React from "react";
-
+import Image from "next/image";
 export default function RepairDetail() {
   const router = useRouter();
   const { id } = router.query;
@@ -95,9 +95,18 @@ export default function RepairDetail() {
           {/* 維修內容 */}
           <div className="p-2">
             <div className=" mb-2">維修內容：</div>
-            <div className="min-h-[200px] whitespace-pre-wrap">
+            <div className="min-h-[100px] whitespace-pre-wrap">
               {repair.content}
             </div>
+            {repair.images.map((image) => (
+              <Image
+                key={image.id}
+                src={image.url}
+                alt="維修圖片"
+                width={300}
+                height={300}
+              />
+            ))}
           </div>
 
           {/* 簽名欄 */}

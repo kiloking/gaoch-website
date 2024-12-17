@@ -1,20 +1,9 @@
 import { api } from "@/utils/api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-type WorkFormData = {
-  title: string;
-  year: string;
-  location: string;
-  description: string;
-  address: string;
-  area: string;
-  units: string;
-  floors: string;
-  houseTypes: string;
-  architect: string;
-  company: string;
-};
+import { WorkForm } from "./WorkForm";
+import { WorkFormData } from "@/types/types";
+import { toast } from "sonner";
 
 export function WorksList() {
   const [selectedWorkId, setSelectedWorkId] = useState<number | null>(null);
@@ -24,27 +13,52 @@ export function WorksList() {
     { id: selectedWorkId! },
     { enabled: !!selectedWorkId }
   );
+  const utils = api.useUtils();
+  const { mutate: createWork } = api.works.create.useMutation({
+    onSuccess: () => {
+      utils.works.getAll.invalidate();
+    },
+  });
+  const { mutate: updateWork } = api.works.update.useMutation({
+    onSuccess: () => {
+      utils.works.getAll.invalidate();
+      utils.works.getById.invalidate();
+      setSelectedWorkId(null);
+      toast("更新成功", {
+        position: "top-center",
+      });
+      editReset();
+    },
+  });
 
-  const { register, handleSubmit, reset } = useForm<WorkFormData>();
+  const { reset } = useForm<WorkFormData>();
 
   const onSubmit = (data: WorkFormData) => {
     console.log(data);
-    // TODO: 實作新增業績的 API
+
+    const createData = {
+      ...data,
+      bgimgId: data.bgimgId ? data.bgimgId : null,
+      coverImageId: data.coverImageId ? data.coverImageId : null,
+    };
+    createWork({ data: createData });
+
     setShowAddForm(false);
     reset();
   };
 
-  const {
-    register: editRegister,
-    handleSubmit: handleEditSubmit,
-    reset: editReset,
-  } = useForm<WorkFormData>();
+  const { reset: editReset } = useForm<WorkFormData>();
 
   const onEditSubmit = (data: WorkFormData) => {
-    console.log(data);
-    // TODO: 實作更新業績的 API
-    setSelectedWorkId(null);
-    editReset();
+    if (!selectedWorkId) return;
+    const updateData = {
+      ...data,
+      bgimgId: data.bgimgId ? data.bgimgId : null,
+      coverImageId: data.coverImageId ? data.coverImageId : null,
+    };
+
+    console.log("Updating with data:", updateData); // 調試用
+    updateWork({ id: selectedWorkId!, data: updateData });
   };
 
   if (isLoading) return <div>載入中...</div>;
@@ -52,126 +66,17 @@ export function WorksList() {
   if (showAddForm) {
     return (
       <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">新增業績</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                標題
-              </label>
-              <input
-                {...register("title", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                年份
-              </label>
-              <input
-                {...register("year", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                地點
-              </label>
-              <input
-                {...register("location", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                地址
-              </label>
-              <input
-                {...register("address", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                建地面積
-              </label>
-              <input
-                {...register("area", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                戶數/車位
-              </label>
-              <input
-                {...register("units", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                樓層
-              </label>
-              <input
-                {...register("floors", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                格局
-              </label>
-              <input
-                {...register("houseTypes")}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                建築師事務所
-              </label>
-              <input
-                {...register("architect", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                營造廠商
-              </label>
-              <input
-                {...register("company", { required: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
-              描述
-            </label>
-            <textarea
-              {...register("description", { required: true })}
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-            />
-          </div>
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              取消
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
-            >
-              儲存
-            </button>
-          </div>
-        </form>
+        <div className="flex flex-col  items-start mb-4">
+          <h2 className="text-2xl font-bold mb-4">新增業績</h2>
+          <p className="text-sm text-gray-500">
+            精彩力作頁面，請填寫業績的相關資訊，包括標題、年份、地點、描述等。
+          </p>
+        </div>
+        <WorkForm
+          onSubmit={onSubmit}
+          onCancel={() => setShowAddForm(false)}
+          submitLabel="儲存"
+        />
       </div>
     );
   }
@@ -180,136 +85,12 @@ export function WorksList() {
     return (
       <div className="container mx-auto p-4">
         <h2 className="text-2xl font-bold mb-4">編輯業績</h2>
-        <form onSubmit={handleEditSubmit(onEditSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                標題
-              </label>
-              <input
-                {...editRegister("title")}
-                defaultValue={selectedWork.title}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                年份
-              </label>
-              <input
-                {...editRegister("year")}
-                defaultValue={selectedWork.year}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                地點
-              </label>
-              <input
-                {...editRegister("location")}
-                defaultValue={selectedWork.location}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                地址
-              </label>
-              <input
-                {...editRegister("address")}
-                defaultValue={selectedWork.address}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                建地面積
-              </label>
-              <input
-                {...editRegister("area")}
-                defaultValue={selectedWork.area}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                戶數/車位
-              </label>
-              <input
-                {...editRegister("units")}
-                defaultValue={selectedWork.units}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                樓層
-              </label>
-              <input
-                {...editRegister("floors")}
-                defaultValue={selectedWork.floors}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                格局
-              </label>
-              <input
-                {...editRegister("houseTypes")}
-                defaultValue={selectedWork.houseTypes}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                建築師事務所
-              </label>
-              <input
-                {...editRegister("architect")}
-                defaultValue={selectedWork.architect}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                營造廠商
-              </label>
-              <input
-                {...editRegister("company")}
-                defaultValue={selectedWork.company}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-              />
-            </div>
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
-              描述
-            </label>
-            <textarea
-              {...editRegister("description")}
-              defaultValue={selectedWork.description}
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-            />
-          </div>
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              onClick={() => setSelectedWorkId(null)}
-              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              取消
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
-            >
-              更新
-            </button>
-          </div>
-        </form>
+        <WorkForm
+          initialData={selectedWork}
+          onSubmit={onEditSubmit}
+          onCancel={() => setSelectedWorkId(null)}
+          submitLabel="更新"
+        />
       </div>
     );
   }
@@ -317,7 +98,10 @@ export function WorksList() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">業績作品管理</h1>
+        <div className="flex flex-col items-start">
+          <h1 className="text-2xl font-bold">業績作品管理</h1>
+          <p className="text-sm text-gray-500">精彩力作</p>
+        </div>
         <button
           onClick={() => setShowAddForm(true)}
           className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"

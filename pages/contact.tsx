@@ -3,16 +3,9 @@ import { useState, FormEvent, useRef } from "react";
 import { api } from "@/utils/api";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
+import { ImageUploadButton } from "@/components/ImageUploadButton";
+import { RepairFormData } from "@/types/types";
 
-interface RepairForm {
-  type: "公設" | "非公設";
-  unit: string;
-  contactName: string;
-  phone: string;
-  content: string;
-  images: number;
-  date: string;
-}
 interface ContactInfo {
   address: string;
   phone: string;
@@ -21,15 +14,18 @@ interface ContactInfo {
   mapUrl: string;
 }
 export default function Contact() {
-  const [formData, setFormData] = useState<RepairForm>({
+  const [formData, setFormData] = useState<RepairFormData>({
     type: "公設",
     unit: "",
     contactName: "",
     phone: "",
     content: "",
-    images: 0,
+    images: [],
     date: new Date().toISOString().split("T")[0], // 自動帶入今天日期
+    status: "待處理",
   });
+
+  const [resetImages, setResetImages] = useState(false);
 
   const { mutate: createRepair, isLoading } = api.repair.create.useMutation({
     onSuccess: () => {
@@ -43,9 +39,14 @@ export default function Contact() {
         contactName: "",
         phone: "",
         content: "",
-        images: 0,
+        images: [],
         date: new Date().toISOString().split("T")[0],
+        status: "待處理",
       });
+      setUploadedImages([]);
+      setResetImages(true); // 觸發重置
+      recaptchaRef.current?.reset();
+      setIsVerified(false);
     },
     onError: () => {
       toast("提交失敗，請稍後再試", {
@@ -79,6 +80,8 @@ export default function Contact() {
         phone: formData.phone,
         content: formData.content,
         date: formData.date,
+        images: formData.images,
+        status: "待處理",
       });
 
       // 重置 reCAPTCHA
@@ -98,6 +101,28 @@ export default function Contact() {
     mapUrl:
       "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14477.118789727136!2d121.2048513!3d24.8884394!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34683ccfdddb9505%3A0x62a11cb420799f3f!2z6auY6Kqg6ZaL55m85bu66Kit5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1732854454586!5m2!1szh-TW!2stw",
   });
+
+  // 處理圖片變更
+  const [uploadedImages, setUploadedImages] = useState<
+    Array<{ url: string; id: number }>
+  >([]);
+
+  const handleImagesChange = (url: string, imageId?: number) => {
+    if (uploadedImages.length >= 2) {
+      toast("最多只能上傳2張圖片", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    if (url && imageId) {
+      setUploadedImages([...uploadedImages, { url, id: imageId }]);
+      setFormData({
+        ...formData,
+        images: [...(formData.images || []), imageId],
+      });
+    }
+  };
 
   return (
     <Layout>
@@ -172,7 +197,7 @@ export default function Contact() {
                       />
                     </svg>
                     <div>
-                      <h3 className="font-medium">��話</h3>
+                      <h3 className="font-medium">電話</h3>
                       <p className="text-gray-600">{contactInfo.phone}</p>
                     </div>
                   </div>
@@ -239,9 +264,14 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* 右側：報修表�� */}
+            {/* 右側：報修表 */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h2 className="text-2xl font-bold mb-6">線上報修</h2>
+              <div className="flex flex-col justify-center items-center mb-6">
+                <h2 className="text-2xl font-bold mb-2">線上報修</h2>
+                <p className="text-sm text-gray-500">
+                  此表單適用於住戶進行設備報修，若有其他業務需求請來信或來電洽詢。
+                </p>
+              </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* 報修類型 */}
                 <div>
@@ -316,7 +346,7 @@ export default function Contact() {
                 {/* 維修內容 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    維修內容 *
+                    維修內容描述 *
                   </label>
                   <textarea
                     required
@@ -332,15 +362,31 @@ export default function Contact() {
                 {/* 圖片上傳 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    上傳圖片（最多2張）(尚未實作)
+                    詳細圖片上傳
+                    <p className="text-xs text-gray-500">
+                      *最多2張，僅限JPG、PNG格式，單張圖片請勿超過10MB
+                    </p>
                   </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    disabled
-                    multiple
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <ImageUploadButton
+                        onImagesChange={handleImagesChange}
+                        inputId="image-upload-1"
+                        disabled={uploadedImages.length >= 2}
+                        reset={resetImages}
+                        completedWord="圖片上傳完成"
+                      />
+                    </div>
+                    <div>
+                      <ImageUploadButton
+                        onImagesChange={handleImagesChange}
+                        inputId="image-upload-2"
+                        disabled={uploadedImages.length >= 2}
+                        reset={resetImages}
+                        completedWord="圖片上傳完成"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* 填單日期 */}

@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
+  api: {
+    bodyParser: {
+      sizeLimit: "8mb", // 設定更大的限制
+    },
+    responseLimit: false,
+  },
   images: {
     unoptimized: true,
     remotePatterns: [

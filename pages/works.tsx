@@ -2,11 +2,12 @@ import Layout from "@/components/layouts/Layout";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { WORKS } from "@/constants/works";
+import { api } from "@/utils/api";
 
 export default function Works() {
-  const filteredWorks = WORKS;
+  const { data: works, isLoading } = api.works.getAll.useQuery();
 
+  if (isLoading) return <div>Loading...</div>;
   return (
     <Layout>
       <div
@@ -36,47 +37,48 @@ export default function Works() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-10"
           >
             <AnimatePresence mode="popLayout">
-              {filteredWorks.map((work) => (
-                <motion.div
-                  key={work.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link href={`/works/${work.id}`} className="group ">
-                    <div className="relative  transform  border border-black/10 rounded-md  bg-white/20 shadow-lg hover:shadow-xl transition-shadow duration-500">
-                      <div className=" inset-0 transform  scale-[1] origin-center aspect-[14/8] rounded-md overflow-hidden">
-                        <Image
-                          src={`https://web.forestdev.work/gaoch/works/${work.image}`}
-                          alt={work.title}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                      </div>
-                      <div className="  text-black py-1 px-2  ">
-                        <div className=" transform  flex flex-col justify-end ">
-                          <h3 className="text-black font-bold mb-1">
-                            {work.title}
-                          </h3>
-                          <div className="text-black/80 text-sm">
-                            <span>{work.year}</span>
-                            <span className="mx-2">|</span>
-                            <span>{work.location}</span>
+              {works &&
+                works.map((work) => (
+                  <motion.div
+                    key={work.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Link href={`/works/${work.id}`} className="group ">
+                      <div className="relative  transform  border border-black/10 rounded-md  bg-white/20 shadow-2xl hover:shadow-xl transition-shadow duration-500">
+                        <div className=" inset-0 transform  scale-[1] origin-center aspect-[14/9] rounded-md overflow-hidden">
+                          <Image
+                            src={work.coverImage?.url || ""}
+                            alt={work.title}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                          />
+                        </div>
+                        <div className="  text-black py-1 px-2  ">
+                          <div className=" transform  flex flex-col justify-end ">
+                            <h3 className="text-black font-bold mb-1">
+                              {work.title}
+                            </h3>
+                            <div className="text-black/80 text-sm">
+                              <span>{work.year}</span>
+                              <span className="mx-2">|</span>
+                              <span>{work.location}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    </Link>
+                  </motion.div>
+                ))}
             </AnimatePresence>
           </motion.div>
 
           {/* 無作品提示 */}
           <AnimatePresence>
-            {filteredWorks.length === 0 && (
+            {works && works.length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

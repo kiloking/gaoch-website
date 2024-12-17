@@ -9,21 +9,13 @@ import {
 } from "@/components/ui/dialog";
 import { api } from "@/utils/api";
 import { toast } from "sonner";
-
-type Repair = {
-  id: number;
-  type: string;
-  unit: string;
-  contactName: string;
-  phone: string;
-  content: string;
-  date: string;
-  status: string;
-  updatedAt: Date;
-};
+import Image from "next/image";
+import { RepairListType } from "@/types/types";
 
 export function RepairList() {
-  const [selectedRepair, setSelectedRepair] = useState<Repair | null>(null);
+  const [selectedRepair, setSelectedRepair] = useState<RepairListType | null>(
+    null
+  );
   const [editStatus, setEditStatus] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -209,14 +201,39 @@ export function RepairList() {
                                 <span className="font-bold">內容：</span>
                                 {selectedRepair?.content}
                               </div>
+                              <div>
+                                <span className="font-bold">圖片：</span>
+                                <div className="flex gap-2">
+                                  {selectedRepair?.images.map((image) => (
+                                    <Image
+                                      key={image.id}
+                                      src={image.url}
+                                      alt="維修圖片"
+                                      width={300}
+                                      height={300}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </DialogDescription>
                           <DialogFooter>
                             <button
-                              onClick={handleStatusChange}
-                              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                              onClick={() =>
+                                window.open(
+                                  `/dashboard/repair/${repair.id}`,
+                                  "_blank"
+                                )
+                              }
+                              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-800"
                             >
-                              儲存狀態
+                              查看/列印申請單
+                            </button>
+                            <button
+                              onClick={handleStatusChange}
+                              className="bg-zinc-700 text-white px-4 py-2 rounded hover:bg-gray-800"
+                            >
+                              儲存處理狀態
                             </button>
                           </DialogFooter>
                         </DialogContent>

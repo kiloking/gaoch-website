@@ -1,24 +1,50 @@
 import Layout from "@/components/layouts/Layout";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { WORKS } from "@/constants/works";
 import { motion } from "framer-motion";
+import { api } from "@/utils/api";
+import { z } from "zod";
+import { GetServerSideProps } from "next";
 
-export default function WorkDetail() {
-  const router = useRouter();
-  const { id } = router.query;
+// getServerSideProps url 帶 id
+const paramSchema = z.object({
+  work_id: z.coerce.number(),
+});
+type Param = z.infer<typeof paramSchema>;
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const parsedResult = paramSchema.safeParse(context.params);
+
+  if (!parsedResult.success) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      ...parsedResult.data,
+    },
+  };
+};
+
+export default function WorkDetail(props: Param) {
+  const { data: currentWork } = api.works.getById.useQuery({
+    id: props.work_id,
+  });
   // 找到當前作品
-  const currentWork = WORKS.find((work) => work.id === Number(id));
 
-  // 找到前一個和下一個作品
-  const currentIndex = WORKS.findIndex((work) => work.id === Number(id));
-  const prevWork = currentIndex > 0 ? WORKS[currentIndex - 1] : null;
-  const nextWork =
-    currentIndex < WORKS.length - 1 ? WORKS[currentIndex + 1] : null;
+  // 使用單一查詢獲取相鄰作品
+  const { data: adjacentWorks } = api.works.getAdjacentWorks.useQuery({
+    currentId: props.work_id,
+  });
 
-  if (!currentWork) return null;
+  // 解構相鄰作品
+  const prevWork = adjacentWorks?.prev;
+  const nextWork = adjacentWorks?.next;
+
+  if (!currentWork) {
+    return <div>找不到此作品</div>;
+  }
 
   return (
     <Layout>
@@ -30,7 +56,7 @@ export default function WorkDetail() {
       >
         <div className="flex justify-center items-center w-full bg-zinc-100 aspect-[15/8] bg-cover bg-center bg-no-repeat relative -z-0">
           <motion.div
-            key={currentWork.bgimg}
+            key={currentWork.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -38,14 +64,14 @@ export default function WorkDetail() {
             className="absolute inset-0"
           >
             <Image
-              src={`https://web.forestdev.work/gaoch/works/${currentWork.bgimg}`}
+              src={currentWork.bgimg?.url || ""}
               alt={currentWork.title}
               fill
               className="object-cover"
             />
           </motion.div>
           {/* black 遮罩 */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-transparent z-10" />
           <motion.div
             key={currentWork.id}
             initial={{ opacity: 0, x: -100 }}
@@ -63,35 +89,35 @@ export default function WorkDetail() {
                 <div className="grid grid-cols-1 gap-6">
                   <div>
                     <h3 className="font-medium text-white">基地位置</h3>
-                    <p>{currentWork.details?.address}</p>
+                    <p>{currentWork?.address}</p>
                   </div>
                   <div>
                     <h3 className="font-medium text-white">基地面積</h3>
-                    <p>{currentWork.details?.area}</p>
+                    <p>{currentWork?.area}</p>
                   </div>
-                  {currentWork.details?.units && (
+                  {currentWork?.units && (
                     <div>
                       <h3 className="font-medium text-white">戶數規劃</h3>
-                      <p>{currentWork.details.units}</p>
+                      <p>{currentWork.units}</p>
                     </div>
                   )}
                   <div>
                     <h3 className="font-medium text-white">樓層規劃</h3>
-                    <p>{currentWork.details?.floors}</p>
+                    <p>{currentWork?.floors}</p>
                   </div>
-                  {currentWork.details?.houseTypes && (
+                  {currentWork?.houseTypes && (
                     <div>
                       <h3 className="font-medium text-white">坪數規劃</h3>
-                      <p>{currentWork.details.houseTypes}</p>
+                      <p>{currentWork.houseTypes}</p>
                     </div>
                   )}
                   <div>
                     <h3 className="font-medium text-white">建築設計</h3>
-                    <p>{currentWork.details?.architect}</p>
+                    <p>{currentWork?.architect}</p>
                   </div>
                   <div>
                     <h3 className="font-medium text-white">施工營造</h3>
-                    <p>{currentWork.details?.constructor}</p>
+                    <p>{currentWork?.company}</p>
                   </div>
                 </div>
               </div>
@@ -158,7 +184,7 @@ export default function WorkDetail() {
           {/* 主要圖片 */}
           <div className="relative aspect-video mb-12">
             <Image
-              src={`https://web.forestdev.work/gaoch/works/${currentWork.image}`}
+              src={currentWork.coverImage?.url || ""}
               alt={currentWork.title}
               fill
               className="object-cover"
@@ -171,12 +197,12 @@ export default function WorkDetail() {
               <Link href={`/works/${prevWork.id}`} className="group">
                 <div className="relative aspect-[3/2] mb-4">
                   <Image
-                    src={`https://web.forestdev.work/gaoch/works/${prevWork.image}`}
+                    src={prevWork.coverImage?.url || ""}
                     alt={prevWork.title}
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors" />
                 </div>
                 <div className="text-sm text-gray-500 mb-2">上一個作品</div>
                 <div className="font-bold">{prevWork.title}</div>
@@ -186,12 +212,12 @@ export default function WorkDetail() {
               <Link href={`/works/${nextWork.id}`} className="group text-right">
                 <div className="relative aspect-[3/2] mb-4">
                   <Image
-                    src={`https://web.forestdev.work/gaoch/works/${nextWork.image}`}
+                    src={nextWork.coverImage?.url || ""}
                     alt={nextWork.title}
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors" />
                 </div>
                 <div className="text-sm text-gray-500 mb-2">下一個作品</div>
                 <div className="font-bold">{nextWork.title}</div>

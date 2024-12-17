@@ -24,14 +24,19 @@ model Repair {
   status      String   @default("待處理") // 維修單狀態
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  images      Image[] @relation("RepairImages")
 }
 
 model Work {
   id          Int      @id @default(autoincrement())
   title       String
   images      Image[] @relation("WorkImages")
-  imageId     Int
-  bgimg       Image   @relation(fields: [imageId], references: [id])
+
+  bgimgId     Int?
+  bgimg       Image?   @relation(fields: [bgimgId], references: [id], name: "WorkBgimg")
+
+  coverImageId Int?
+  coverImage  Image?   @relation(fields: [coverImageId], references: [id], name: "WorkCoverImage")
   year        String
   location    String
   description String
@@ -53,6 +58,9 @@ model Image {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   workImages  Work[]     @relation("WorkImages")
-  workBgimg   Work[]     
+  workCoverImage  Work[]     @relation("WorkCoverImage")
+  workBgimg       Work[]     @relation("WorkBgimg")
+  repairImages  Repair[]     @relation("RepairImages")
 }
+
 

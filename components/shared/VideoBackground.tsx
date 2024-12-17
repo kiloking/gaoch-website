@@ -62,7 +62,7 @@ export default function VideoBackground({ videoId }: VideoBackgroundProps) {
       {/* 新增 Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <button className="fixed bottom-8 right-8 z-30 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full backdrop-blur-sm transition-all duration-300">
+          <button className="fixed bottom-8 right-8 z-30 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full backdrop-blur-sm transition-all duration-300 hidden ">
             觀看影片
           </button>
         </DialogTrigger>

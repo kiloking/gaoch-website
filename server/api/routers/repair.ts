@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { getAllRepair, getRepairById } from "../database/repair";
 
 // 定義表單資料的驗證 schema
 const repairSchema = z.object({
@@ -9,6 +10,8 @@ const repairSchema = z.object({
   phone: z.string().min(1, "請填寫聯絡電話"),
   content: z.string().min(1, "請填寫維修內容"),
   date: z.string(),
+  images: z.array(z.number()).optional(),
+  status: z.string(),
 });
 
 export const repairRouter = createTRPCRouter({
@@ -19,6 +22,11 @@ export const repairRouter = createTRPCRouter({
         const repair = await ctx.prisma.repair.create({
           data: {
             ...input,
+            images: input.images
+              ? {
+                  connect: input.images.map((id) => ({ id })),
+                }
+              : undefined,
             status: "待處理",
           },
         });
@@ -33,17 +41,13 @@ export const repairRouter = createTRPCRouter({
     }),
 
   getById: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    const repair = await ctx.prisma.repair.findUnique({
-      where: { id: parseInt(input) },
-    });
+    const repair = await getRepairById(parseInt(input));
     if (!repair) throw new Error("找不到此維修單");
     return repair;
   }),
 
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.prisma.repair.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    return getAllRepair();
   }),
 
   updateStatus: publicProcedure
