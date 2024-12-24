@@ -80,7 +80,9 @@ export const RELATED_PARTNERS = [
   {
     name: "柏恩設計團隊",
     img: "bo.jpg",
-    educational: [""],
-    projects: [""],
+    description:
+      "柏恩室內裝修重視人與空間之間的互動。我們想以最親近的方式與您建立更近距離的舒適生活。我們專營代銷、實品屋、建案公設、商業空間、住宅設計，本身代銷出身，甲方出發，透過溝通探索居住者的需求輪廓，採用簡約的線條比例，最自然的材質切割，勾勒空間怖局，呈現具有獨到品味的質感居所",
+    educational: [],
+    projects: [],
   },
 ];

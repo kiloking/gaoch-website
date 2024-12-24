@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { z } from "zod";
 import { GetServerSideProps } from "next";
-
+import { LoaderCircle } from "lucide-react";
 // getServerSideProps url 帶 id
 const paramSchema = z.object({
   work_id: z.coerce.number(),
@@ -43,7 +43,15 @@ export default function WorkDetail(props: Param) {
   const nextWork = adjacentWorks?.next;
 
   if (!currentWork) {
-    return <div>找不到此作品</div>;
+    //return fullscreen loading circle
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <div className="flex flex-col items-center">
+          <LoaderCircle className="w-10 h-10 animate-spin" />
+          <div className="text-sm text-gray-500">Loading...</div>
+        </div>
+      </div>
+    );
   }
 
   return (

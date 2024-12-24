@@ -71,31 +71,46 @@ export default function Partners() {
                       </div>
                       <h3 className="text-xl font-semibold ">{item.name}</h3>
                     </div>
-                    <div className="mt-4">
-                      <div className="text-gray-900 font-semibold mb-1">
-                        學歷：
+                    {item.description && (
+                      <div className="mt-4">
+                        <div className="text-gray-900 font-semibold mb-1">
+                          團隊介紹
+                        </div>
+                        <div className="text-gray-600 mb-1">
+                          {item.description}
+                        </div>
                       </div>
-                      <div className="text-gray-600 mb-1">
-                        {item.educational.map((item, index) => (
-                          <p key={index} className="mb-1">
-                            {item}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
+                    )}
 
-                    <div className="mt-4">
-                      <div className="text-gray-900 font-semibold mb-1">
-                        簡歷：
+                    {item.educational.length > 0 && (
+                      <div className="mt-4">
+                        <div className="text-gray-900 font-semibold mb-1">
+                          學歷：
+                        </div>
+                        <div className="text-gray-600 mb-1">
+                          {item.educational.map((item, index) => (
+                            <p key={index} className="mb-1">
+                              {item}
+                            </p>
+                          ))}
+                        </div>
                       </div>
-                      <div className="text-gray-600 mb-1">
-                        {item.projects.map((project, index) => (
-                          <p key={index} className="mb-1">
-                            {project}
-                          </p>
-                        ))}
+                    )}
+
+                    {item.projects.length > 0 && (
+                      <div className="mt-4">
+                        <div className="text-gray-900 font-semibold mb-1">
+                          簡歷：
+                        </div>
+                        <div className="text-gray-600 mb-1">
+                          {item.projects.map((project, index) => (
+                            <p key={index} className="mb-1">
+                              {project}
+                            </p>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>
