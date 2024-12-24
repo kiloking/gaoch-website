@@ -45,7 +45,7 @@ const Navbar = () => {
               <Image
                 src="https://web.forestdev.work/gaoch/logo.png"
                 alt="logo"
-                width={100}
+                width={150}
                 height={24}
                 priority={false}
               />
@@ -111,7 +111,7 @@ const Navbar = () => {
               <Image
                 src="https://web.forestdev.work/gaoch/logo3x.png"
                 alt="image"
-                width={200}
+                width={250}
                 height={24}
                 priority={false}
               />

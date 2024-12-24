@@ -1,4 +1,5 @@
 import Layout from "@/components/layouts/Layout";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
@@ -98,18 +99,21 @@ export default function Projects() {
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="flex justify-center items-center w-full bg-zinc-100 h-[300px] bg-cover bg-center bg-no-repeat relative -z-0"
           style={{
-            backgroundImage: "url(https://web.forestdev.work/gaoch/bg08.jpg)",
+            backgroundImage: "url(https://web.forestdev.work/gaoch/bg/08.png)",
           }}
         >
           {/* black 遮罩 */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
-          <div className="text-white/80 text-3xl font-bold z-20 absolute bottom-10 left-10">
-            新案鑑賞 / Project
+          <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
+            Projects <span className="text-white text-xl"> / 新案鑒賞</span>
           </div>
-        </div>
+        </motion.div>
         <div className="container mx-auto px-4 mt-[5%]">
           {/* 頁面標題 */}
 

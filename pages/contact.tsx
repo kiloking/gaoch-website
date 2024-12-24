@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ImageUploadButton } from "@/components/ImageUploadButton";
 import { RepairFormData } from "@/types/types";
+import { motion } from "framer-motion";
 
 interface ContactInfo {
   address: string;
@@ -132,10 +133,13 @@ export default function Contact() {
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
       >
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="flex justify-center items-center w-full bg-zinc-100 h-[300px] bg-cover bg-center bg-no-repeat relative -z-0"
           style={{
-            backgroundImage: "url(https://web.forestdev.work/gaoch/bg06.jpg)",
+            backgroundImage: "url(https://web.forestdev.work/gaoch/bg/02.png)",
           }}
         >
           {/* black 遮罩 */}
@@ -143,7 +147,7 @@ export default function Contact() {
           <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
             Contact Us <span className="text-white text-xl"> / 聯絡我們</span>
           </div>
-        </div>
+        </motion.div>
         <div className="container mx-auto px-4 mt-[5%]">
           {/* 標題圖片 */}
 

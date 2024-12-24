@@ -34,22 +34,28 @@ export const frontNavLinks = [
 // 合作關係建築師或企業
 export const RELATED_COMPANIES = [
   {
-    name: "OOXX股份有限公司",
+    name: "高誠實業",
     img: "kong.jpg",
-    educational: [""],
-    projects: [""],
   },
   {
-    name: "OOXX股份有限公司",
+    name: "高誠建設",
     img: "lin.jpg",
-    educational: [""],
-    projects: [""],
   },
   {
-    name: "OOXX股份有限公司",
+    name: "高華建設",
     img: "bo.jpg",
-    educational: [""],
-    projects: [""],
+  },
+  {
+    name: "高華營造",
+    img: "bo.jpg",
+  },
+  {
+    name: "璞誠建設",
+    img: "bo.jpg",
+  },
+  {
+    name: "高誠開發建設",
+    img: "bo.jpg",
   },
 ];
 
