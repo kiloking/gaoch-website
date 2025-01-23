@@ -14,9 +14,9 @@ const Footer = () => {
       <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-slate-300 ">
         <div className="w-24">
           <Image
-            src="https://web.forestdev.work/logo.png"
-            alt="image"
-            width={200}
+            src="https://web.forestdev.work/gaoch/logo.svg"
+            alt="logo"
+            width={250}
             height={24}
             priority={false}
           />
@@ -27,14 +27,14 @@ const Footer = () => {
             <a
               target="_blank"
               className=" border aspect-square p-1 border-black/40 hover:bg-zinc-300"
-              href="https://www.facebook.com/profile.php?id=61553365438301&locale=zh_TW"
+              href="https://www.facebook.com/profile.php?id=100064837400096"
             >
               <FaFacebookF />
             </a>
             <a
               target="_blank"
               className=" border aspect-square p-1 border-black/40 hover:bg-zinc-300"
-              href="https://www.instagram.com/dayu_arch/"
+              href="https://www.instagram.com/gaochengcareer"
             >
               <FaInstagram />
             </a>
