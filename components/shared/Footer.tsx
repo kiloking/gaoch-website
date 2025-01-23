@@ -55,13 +55,13 @@ const Footer = () => {
           </div>
           <div className="flex items-center gap-2">
             <FaPhoneAlt size={10} />
-            TEL 04-2329 9298
+            TEL 03-470-6501
           </div>
           <div className="flex items-center gap-2">
             <FaMapMarkerAlt size={10} />
-            408台中市南屯區公益路二段51號13樓B2室
+            325桃園市龍潭區工二路一段96巷11號
           </div>
-          <div>copyright, 2024 All Right Reserved.</div>
+          <div>copyright, 2025 All Right Reserved.</div>
         </div>
       </div>
     </>
