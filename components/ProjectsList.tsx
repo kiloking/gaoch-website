@@ -2,7 +2,7 @@ import { api } from "@/utils/api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ProjectsForm } from "./ProjectsForm";
-import { ProjectFormData, ProjectsStatusType } from "@/types/types";
+import { ProjectFormData } from "@/types/types";
 import { toast } from "sonner";
 import { ChevronLeft } from "lucide-react";
 

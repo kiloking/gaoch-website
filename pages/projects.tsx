@@ -4,32 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/utils/api";
 import { SquareArrowOutUpRight } from "lucide-react";
-interface Project {
-  id: number;
-  title: string;
-  location: string;
-  status: "熱銷中" | "即將完工" | "即將開案";
-  logoimg: string;
-  image: string;
-  price: string;
-  area: string;
-  link: string;
-  details: {
-    基地位置: string;
-    基地面積: string;
-    規劃坪數: string;
-    規劃樓層: string;
-    規劃戶車: string;
-    建築設計: string;
-    施工營造: string;
-  };
-}
 
 export default function Projects() {
   // 專案資料
 
-  const { data: projects, isLoading } = api.projects.getAll.useQuery();
-  console.log(projects);
+  const { data: projects } = api.projects.getAll.useQuery();
 
   return (
     <Layout>

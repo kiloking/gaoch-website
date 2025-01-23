@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { api } from "@/utils/api";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
@@ -14,11 +13,11 @@ interface VideoUploadButtonProps {
 }
 
 export default function VideoUploadButton({
-  onVideoChange,
+  // onVideoChange,
   inputId,
   reset,
-  completedWord,
-}: VideoUploadButtonProps) {
+}: // completedWord,
+VideoUploadButtonProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {

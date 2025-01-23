@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useCallback } from "react";
 import { ImageUploadButton } from "./ImageUploadButton";
 import { ProjectFormData } from "@/types/types";
 
@@ -22,7 +21,6 @@ export function ProjectsForm({
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<ProjectFormData>({
     defaultValues: {
@@ -32,12 +30,12 @@ export function ProjectsForm({
     },
   });
 
-  const handleImageUpload = useCallback(
-    (url: string, imageId?: number) => {
-      setValue("coverImageId", imageId || null);
-    },
-    [setValue]
-  );
+  // const handleImageUpload = useCallback(
+  //   (url: string, imageId?: number) => {
+  //     setValue("coverImageId", imageId || null);
+  //   },
+  //   [setValue]
+  // );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className=" grid grid-cols-2 gap-4">

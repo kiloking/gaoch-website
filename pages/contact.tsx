@@ -4,7 +4,6 @@ import { api } from "@/utils/api";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ImageUploadButton } from "@/components/ImageUploadButton";
-import VideoUploadButton from "@/components/VideoUploadButton";
 import { RepairFormData } from "@/types/types";
 import { motion } from "framer-motion";
 import {
@@ -44,7 +43,6 @@ export default function Contact() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isVerified, setIsVerified] = useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { mutate: createRepair, isLoading } = api.repair.create.useMutation({
     onSuccess: () => {
       toast.success("報修單已傳送，我們會盡快處理您的維修需求", {
@@ -116,7 +114,6 @@ export default function Contact() {
       return;
     }
 
-    setIsSubmitting(true);
     try {
       await createRepair({
         ...formData,
@@ -132,14 +129,12 @@ export default function Contact() {
       setIsVerified(false);
     } catch {
       console.error("提交失敗");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  const handleFormSubmit = () => {
-    handleSubmit();
-  };
+  // const handleFormSubmit = () => {
+  //   handleSubmit();
+  // };
 
   const [contactInfo] = useState<ContactInfo>({
     address: "325桃園市龍潭區工二路一段96巷11號",
@@ -153,10 +148,10 @@ export default function Contact() {
   const [uploadedImages, setUploadedImages] = useState<
     Array<{ url: string; id: number }>
   >([]);
-  const [uploadedVideo, setUploadedVideo] = useState<{
-    url: string;
-    id: number;
-  } | null>(null);
+  // const [uploadedVideo, setUploadedVideo] = useState<{
+  //   url: string;
+  //   id: number;
+  // } | null>(null);
 
   const handleImagesChange = (url: string, imageId?: number) => {
     if (uploadedImages.length >= 2) {
@@ -175,15 +170,15 @@ export default function Contact() {
     }
   };
 
-  const handleVideoChange = (url: string, videoId?: number) => {
-    if (url && videoId) {
-      setUploadedVideo({ url, id: videoId });
-      setFormData({
-        ...formData,
-        videoId,
-      });
-    }
-  };
+  // const handleVideoChange = (url: string, videoId?: number) => {
+  //   if (url && videoId) {
+  //     setUploadedVideo({ url, id: videoId });
+  //     setFormData({
+  //       ...formData,
+  //       videoId,
+  //     });
+  //   }
+  // };
 
   return (
     <Layout>
