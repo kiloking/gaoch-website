@@ -15,16 +15,28 @@ datasource db {
 
 model Repair {
   id          Int      @id @default(autoincrement())
-  type        String   // 公設 or 非公設
+  serial_no   String   @unique
   unit        String   // 戶別
   contactName String   // 聯絡人
   phone       String   // 聯絡電話
   content     String   // 維修內容
   date        String   // 填單日期
+
   status      String   @default("待處理") // 維修單狀態
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   images      Image[] @relation("RepairImages")
+
+  videoId     Int?
+  video       Video?   @relation(fields: [videoId], references: [id] , name: "RepairVideo")
+
+  community_code String // 社區代碼
+  community_name String // 社區名稱
+  email String // 電子郵件
+  contact_time String  //聯絡時間
+  repair_area String //修繕區域
+  repair_class String //修繕類別
+
 }
 
 model Work {
@@ -61,6 +73,35 @@ model Image {
   workCoverImage  Work[]     @relation("WorkCoverImage")
   workBgimg       Work[]     @relation("WorkBgimg")
   repairImages  Repair[]     @relation("RepairImages")
+  ProjectCoverImage Project[] @relation("ProjectCoverImage")
+}
+
+// model video 
+model Video {
+  id          Int      @id @default(autoincrement())
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  repairVideo      Repair[]     @relation("RepairVideo")
 }
 
 
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  location  String
+  status    String
+  coverImageId Int?
+  coverImage  Image?   @relation(fields: [coverImageId], references: [id], name: "ProjectCoverImage")
+  price     String
+  link      String
+  base  String //基地位置
+  area String //基地面積
+  size String //建物坪數
+  floors String //樓層
+  household String //戶數
+  design_company String //設計公司
+  construction_company String //施工公司
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

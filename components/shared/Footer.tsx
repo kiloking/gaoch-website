@@ -5,11 +5,13 @@ import {
   FaMapMarkerAlt,
   FaFacebookF,
   FaInstagram,
+  FaLine,
+  FaTiktok,
 } from "react-icons/fa";
 const Footer = () => {
   return (
     <>
-      <div className="text-black/50 text-[1vw] text-right pb-4 w-11/12 mx-auto flex flex-col items-center gap-5 mt-20 mb-2">
+      <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-slate-300 ">
         <div className="w-24">
           <Image
             src="https://web.forestdev.work/logo.png"
@@ -35,6 +37,20 @@ const Footer = () => {
               href="https://www.instagram.com/dayu_arch/"
             >
               <FaInstagram />
+            </a>
+            <a
+              target="_blank"
+              className=" border aspect-square p-1 border-black/40 hover:bg-zinc-300"
+              href="https://lin.ee/2zWXnUM"
+            >
+              <FaLine />
+            </a>
+            <a
+              target="_blank"
+              className=" border aspect-square p-1 border-black/40 hover:bg-zinc-300"
+              href="https://www.tiktok.com/@gaochengcareer"
+            >
+              <FaTiktok />
             </a>
           </div>
           <div className="flex items-center gap-2">

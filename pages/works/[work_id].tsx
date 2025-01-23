@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { z } from "zod";
 import { GetServerSideProps } from "next";
-import { LoaderCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
 // getServerSideProps url 帶 id
 const paramSchema = z.object({
   work_id: z.coerce.number(),
@@ -56,12 +56,7 @@ export default function WorkDetail(props: Param) {
 
   return (
     <Layout>
-      <div
-        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px]"
-        style={{
-          backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
-        }}
-      >
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px] bg-zinc-100">
         <div className="flex justify-center items-center w-full bg-zinc-100 aspect-[15/8] bg-cover bg-center bg-no-repeat relative -z-0">
           <motion.div
             key={currentWork.id}
@@ -79,7 +74,8 @@ export default function WorkDetail(props: Param) {
             />
           </motion.div>
           {/* black 遮罩 */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-transparent z-10" />
+          {/* <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/5 to-transparent z-10" /> */}
+          <div className=" absolute w-[40%] h-full left-0 top-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
           <motion.div
             key={currentWork.id}
             initial={{ opacity: 0, x: -100 }}
@@ -178,7 +174,11 @@ export default function WorkDetail(props: Param) {
           {/* YouTube 影片 */}
           {currentWork.ytVideoUrl && (
             <div className="w-full mb-16">
-              <h2 className="text-2xl font-bold mb-4">建案影片</h2>
+              <h2 className="text-xl font-bold mb-4 flex  ">
+                <p className="bg-white/90 text-black/60 rounded-full  px-4 py-2">
+                  建案影片
+                </p>
+              </h2>
               <div className="aspect-video">
                 <iframe
                   src={currentWork.ytVideoUrl.replace("watch?v=", "embed/")}
@@ -190,9 +190,14 @@ export default function WorkDetail(props: Param) {
           )}
 
           {/* 主要圖片 */}
+          <h2 className="text-xl font-bold mb-4 flex  ">
+            <p className="bg-white/90 text-black/60 rounded-full  px-4 py-2">
+              外觀圖片
+            </p>
+          </h2>
           <div className="relative aspect-video mb-12">
             <Image
-              src={currentWork.coverImage?.url || ""}
+              src={currentWork.bgimg?.url || ""}
               alt={currentWork.title}
               fill
               className="object-cover"
@@ -200,10 +205,16 @@ export default function WorkDetail(props: Param) {
           </div>
 
           {/* 上一個/下一個作品 */}
-          <div className="grid grid-cols-2 gap-8">
-            {prevWork && (
-              <Link href={`/works/${prevWork.id}`} className="group">
-                <div className="relative aspect-[3/2] mb-4">
+          <div className="flex justify-between">
+            {prevWork ? (
+              <Link
+                href={`/works/${prevWork.id}`}
+                className="group w-[20%] flex items-center "
+              >
+                <div className="text-sm text-gray-500 mb-2">
+                  <ChevronLeft />
+                </div>
+                <div className="relative aspect-[16/9] mb-4 rounded-xl overflow-hidden w-full border-4 border-black/10">
                   <Image
                     src={prevWork.coverImage?.url || ""}
                     alt={prevWork.title}
@@ -211,14 +222,20 @@ export default function WorkDetail(props: Param) {
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors" />
+                  <div className="font-bold absolute text-white top-0 w-full h-full flex items-center justify-center text-xl">
+                    {prevWork.title}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-500 mb-2">上一個作品</div>
-                <div className="font-bold">{prevWork.title}</div>
               </Link>
+            ) : (
+              <div className="w-[30%]"></div>
             )}
             {nextWork && (
-              <Link href={`/works/${nextWork.id}`} className="group text-right">
-                <div className="relative aspect-[3/2] mb-4">
+              <Link
+                href={`/works/${nextWork.id}`}
+                className="group text-right w-[20%] flex items-center"
+              >
+                <div className="relative aspect-[16/9] mb-4 rounded-xl overflow-hidden w-full border-4 border-black/10">
                   <Image
                     src={nextWork.coverImage?.url || ""}
                     alt={nextWork.title}
@@ -226,9 +243,13 @@ export default function WorkDetail(props: Param) {
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors" />
+                  <div className="font-bold absolute text-white top-0 w-full h-full flex items-center justify-center text-xl">
+                    {nextWork.title}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-500 mb-2">下一個作品</div>
-                <div className="font-bold">{nextWork.title}</div>
+                <div className="text-sm text-gray-500 mb-2">
+                  <ChevronRight />
+                </div>
               </Link>
             )}
           </div>

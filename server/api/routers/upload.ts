@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { generateSignedUrl } from "@/server/r2/r2";
 import { createImage } from "../database/image";
+import { createVideo } from "../database/video";
 
 export const uploadRouter = createTRPCRouter({
   // create image to db
@@ -31,11 +32,16 @@ export const uploadRouter = createTRPCRouter({
       });
       return signedUrl;
     }),
+
+  // create video to db
+  createVideo: publicProcedure
+    .input(
+      z.object({
+        url: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const video = await createVideo(input.url);
+      return video;
+    }),
 });
-function uploadImageToR2(
-  buffer: Buffer<ArrayBuffer>,
-  fileName: string,
-  fileType: string
-) {
-  throw new Error("Function not implemented.");
-}

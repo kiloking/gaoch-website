@@ -39,41 +39,38 @@ export default function RepairDetail() {
 
         {/* 基本資訊表格 */}
         <div className="flex gap-4 justify-between">
-          <div className="col-span-1 p-2 gap-4 flex ">
-            <div>
-              <input
-                type="checkbox"
-                checked={repair.type === "公設"}
-                readOnly
-              />{" "}
-              公設
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                checked={repair.type === "非公設"}
-                readOnly
-              />{" "}
-              非公設
-            </div>
-          </div>
           <div className=" border-t border-r border-l border-black p-2">
-            <span>編號：{repair.id}</span>
+            <span>編號：{repair.serial_no}</span>
           </div>
         </div>
 
         <div className="border border-black">
           <div className="grid grid-cols-12 border-b border-black">
             <div className="col-span-4 p-2 border-r border-black">
-              <div>工程名稱</div>
+              <div>填單日</div>
+              <div>{repair.date}</div>
             </div>
             <div className="col-span-4 p-2 border-r border-black">
-              <div>業主(客戶)</div>
-              <div>{repair.contactName}</div>
-            </div>
-            <div className="col-span-3 p-2">
               <div>聯絡人</div>
               <div>{repair.contactName}</div>
+            </div>
+            <div className="col-span-4 p-2 ">
+              <div>社區</div>
+              <div>{repair.community_name}</div>
+            </div>
+          </div>
+          <div className="grid grid-cols-12 border-b border-black">
+            <div className="col-span-4 p-2 border-r border-black">
+              <div>方便聯絡時間</div>
+              <div>{repair.contact_time}</div>
+            </div>
+            <div className="col-span-4 p-2 border-r border-black">
+              <div>Email</div>
+              <div>{repair.email}</div>
+            </div>
+            <div className="col-span-4 p-2 ">
+              <div>聯絡電話</div>
+              <div>{repair.phone}</div>
             </div>
           </div>
 
@@ -83,12 +80,17 @@ export default function RepairDetail() {
               <div>{repair.unit}</div>
             </div>
             <div className="col-span-4 p-2 border-r border-black">
-              <div>聯絡電話</div>
-              <div>{repair.phone}</div>
+              <div>區域 / 類型</div>
+              <div>
+                {repair.repair_area} / {repair.repair_class}
+              </div>
             </div>
-            <div className="col-span-3 p-2">
-              <div>填單日</div>
-              <div>{repair.date}</div>
+            <div className="col-span-4 p-2 ">
+              <div>附件</div>
+              <div>
+                圖片 {repair.images.length} 件 / 影片{" "}
+                {repair.videoId ? "1" : "0"} 件
+              </div>
             </div>
           </div>
 

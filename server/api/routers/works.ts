@@ -3,23 +3,6 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { createWork, getAllWorks, updateWork } from "../database/work";
 import { createWorkSchema } from "./types";
 
-const workSchema = z.object({
-  title: z.string(),
-  year: z.string(),
-  location: z.string(),
-  description: z.string(),
-  address: z.string(),
-  area: z.string(),
-  units: z.string(),
-  floors: z.string(),
-  houseTypes: z.string(),
-  architect: z.string(),
-  company: z.string(),
-  ytVideoUrl: z.string().optional(),
-  coverImageId: z.number().optional().nullable(),
-  bgimgId: z.number().optional().nullable(),
-});
-
 export const worksRouter = createTRPCRouter({
   // 獲取所有作品
   getAll: publicProcedure.query(async ({ ctx }) => {

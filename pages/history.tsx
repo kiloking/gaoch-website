@@ -47,7 +47,20 @@ export default function History() {
                             className="object-cover object-center w-full h-full"
                           />
                         </div>
-                        <h3 className="text-xl font-semibold ">{item.name}</h3>
+                        <div className="flex flex-col gap-2">
+                          <h3 className="text-xl font-semibold ">
+                            {item.name}
+                          </h3>
+                          {item.link && item.link !== "" && (
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              className="text-sm text-blue-500 hover:text-blue-700"
+                            >
+                              前往官網
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -206,6 +206,7 @@ export function WorkForm({
                 }}
                 completedWord="上傳完成，儲存後將使用以下圖片"
                 inputId="cover-image-upload"
+                composeSize={700}
               />
             </div>
           </div>
@@ -255,6 +256,7 @@ export function WorkForm({
                 }}
                 completedWord="上傳完成，儲存後將使用以下圖片"
                 inputId="bg-image-upload"
+                composeSize={1920}
               />
             </div>
           </div>

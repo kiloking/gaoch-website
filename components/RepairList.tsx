@@ -78,13 +78,16 @@ export function RepairList() {
                     編號
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    類型
+                    社區
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     戶別
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     聯絡人
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    區域 / 類型
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     狀態
@@ -102,13 +105,16 @@ export function RepairList() {
                   <tr key={repair.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">{repair.id}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {repair.type}
+                      {repair.community_name} ({repair.community_code})
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {repair.unit}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {repair.contactName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {repair.repair_area} / {repair.repair_class}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -138,7 +144,7 @@ export function RepairList() {
                           </button>
                         </DialogTrigger>
                         <DialogContent className="bg-white">
-                          <DialogTitle>維修詳情</DialogTitle>
+                          <DialogTitle>維修申請單詳情</DialogTitle>
                           <DialogDescription>
                             <div className="grid grid-cols-2 gap-4">
                               <div>
@@ -146,8 +152,8 @@ export function RepairList() {
                                 {selectedRepair?.id}
                               </div>
                               <div>
-                                <span className="font-bold">類型：</span>
-                                {selectedRepair?.type}
+                                <span className="font-bold">社區：</span>
+                                {selectedRepair?.community_name}
                               </div>
                               <div>
                                 <span className="font-bold">戶別：</span>
@@ -157,7 +163,14 @@ export function RepairList() {
                                 <span className="font-bold">聯絡人：</span>
                                 {selectedRepair?.contactName}
                               </div>
-
+                              <div>
+                                <span className="font-bold">區域：</span>
+                                {selectedRepair?.repair_area}
+                              </div>
+                              <div>
+                                <span className="font-bold">類型：</span>
+                                {selectedRepair?.repair_class}
+                              </div>
                               <div>
                                 <span className="font-bold">申請日期：</span>
                                 {selectedRepair?.date}
@@ -198,7 +211,7 @@ export function RepairList() {
                                 </select>
                               </div>
                               <div className="col-span-2">
-                                <span className="font-bold">內容：</span>
+                                <span className="font-bold">問題內容：</span>
                                 {selectedRepair?.content}
                               </div>
                               <div>
@@ -215,6 +228,10 @@ export function RepairList() {
                                   ))}
                                 </div>
                               </div>
+                              <div>
+                                <span className="font-bold">影片：</span>
+                                <div className="flex gap-2"></div>
+                              </div>
                             </div>
                           </DialogDescription>
                           <DialogFooter>
@@ -227,7 +244,7 @@ export function RepairList() {
                               }
                               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-800"
                             >
-                              查看/列印申請單
+                              列印申請單
                             </button>
                             <button
                               onClick={handleStatusChange}

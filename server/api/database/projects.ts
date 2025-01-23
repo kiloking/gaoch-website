@@ -1,34 +1,33 @@
 import db from "@/lib/server/db";
-import { createWorkType } from "../routers/types";
+import { createProjectType } from "../routers/types";
 
-//all works
-export const getAllWorks = async () => {
-  // if works is empty, return empty array
-  const works = await db.work.findMany({
+//all projects
+export const getAllProjects = async () => {
+  // if projects is empty, return empty array
+  const projects = await db.project.findMany({
     include: {
       coverImage: true,
-      bgimg: true,
     },
     orderBy: {
-      year: "asc",
+      createdAt: "desc",
     },
   });
-  if (works.length === 0) {
+  if (projects.length === 0) {
     return [];
   }
-  return works;
+  return projects;
 };
 
-export const createWork = async (data: createWorkType) => {
+//create project
+export const createProject = async (data: createProjectType) => {
   try {
     const payload = {
       ...data,
       ...(data.coverImageId !== undefined && {
         coverImageId: data.coverImageId,
       }),
-      ...(data.bgimgId !== undefined && { bgimgId: data.bgimgId }),
     };
-    return await db.work.create({
+    return await db.project.create({
       data: payload,
     });
   } catch (error) {
@@ -36,22 +35,20 @@ export const createWork = async (data: createWorkType) => {
   }
 };
 
-//update work
-export const updateWork = async (id: number, data: createWorkType) => {
+//update project
+export const updateProject = async (id: number, data: createProjectType) => {
   try {
     const payload = {
       ...data,
       ...(data.coverImageId !== undefined && {
         coverImageId: data.coverImageId,
       }),
-      ...(data.bgimgId !== undefined && { bgimgId: data.bgimgId }),
     };
-    return await db.work.update({
+    return await db.project.update({
       where: { id },
       data: payload,
       include: {
         coverImage: true,
-        bgimg: true,
       },
     });
   } catch (error) {

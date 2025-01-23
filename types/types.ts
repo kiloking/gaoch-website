@@ -17,6 +17,27 @@ export type WorkFormData = {
   bgimg: ImageType | null;
 };
 
+//projectFormDataType
+export type ProjectFormData = {
+  coverImageId?: number | null;
+  title: string;
+  location: string;
+  status: string;
+  price: string;
+  link: string;
+  base: string;
+  area: string;
+  size: string;
+  floors: string;
+  household: string;
+  design_company: string;
+  construction_company: string;
+  coverImage: ImageType | null;
+};
+
+//statusType
+export type ProjectsStatusType = "熱銷中" | "即將開工" | "即將開案";
+
 export type ImageType = {
   url: string;
   id: number;
@@ -27,16 +48,13 @@ export type Work = WorkFormData & {
   updatedAt: Date;
 };
 
-// 如果需要部分欄位可選的類型
 export type WorkUpdateData = Partial<WorkFormData>;
 
-// 如果需要特定欄位必填的類型
 export type WorkCreateInput = Omit<WorkFormData, "ytVideoUrl"> & {
   ytVideoUrl?: string;
 };
 
 export type RepairFormData = {
-  type: "公設" | "非公設";
   unit: string;
   contactName: string;
   phone: string;
@@ -44,6 +62,13 @@ export type RepairFormData = {
   images: number[];
   date: string;
   status: string;
+  community_code: string;
+  community_name: string;
+  email: string;
+  contact_time: string;
+  repair_area: string;
+  repair_class: string;
+  videoId: number | null;
 };
 
 export type Repair = RepairFormData & {
@@ -52,13 +77,10 @@ export type Repair = RepairFormData & {
   updatedAt: Date;
 };
 
-export type RepairType = "公設" | "非公設";
-
 export type RepairStatus = "待處理" | "處理中" | "已完成";
 
 export type RepairListType = {
   id: number;
-  type: string;
   status: string;
   date: string;
   unit: string;
@@ -67,6 +89,13 @@ export type RepairListType = {
   content: string;
   createdAt: Date;
   updatedAt: Date;
+  community_code: string;
+  community_name: string;
+  email: string;
+  contact_time: string;
+  repair_area: string;
+  repair_class: string;
+  videoId?: number | null;
   images: {
     id: number;
     url: string;

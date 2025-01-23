@@ -24,10 +24,12 @@ export default function Home() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              穩健 務實 專注
+              務實 專業 用心
             </div>
             <div className="text-white/70 text-lg font-bold w-1/2 mx-auto text-center">
-              深耕房地產相關行業多年，除了累積豐厚經驗與建實力，憑藉著務實的態度與在地政策的了解，「高誠事業」得以成長為耀眼的「在地建築口碑品牌」。
+              深耕房地產相關行業多年，除了累積豐厚經驗與建實力，憑藉著務實的態度與在地政策的了解，
+              <span className="text-amber-400 ">「高誠事業」</span>
+              得以成長為耀眼的「在地建築口碑品牌」。
             </div>
           </section>
         </motion.div>

@@ -8,7 +8,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
   const menuItems = [
     { id: "repair", name: "報修管理", path: "/dashboard/" },
     { id: "works", name: "業績管理", path: "/dashboard/works" },
-    { id: "newCase", name: "新案管理", path: "/dashboard/new-case" },
+    { id: "newCase", name: "新案管理", path: "/dashboard/projects" },
   ];
 
   return (

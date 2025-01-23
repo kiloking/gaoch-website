@@ -15,6 +15,7 @@ interface ImageUploadButtonProps {
   currentImage?: string;
   reset?: boolean;
   completedWord?: string;
+  composeSize?: number;
 }
 
 export function ImageUploadButton({
@@ -24,6 +25,7 @@ export function ImageUploadButton({
   currentImage,
   reset = false,
   completedWord,
+  composeSize,
 }: ImageUploadButtonProps) {
   const [uploadedImage, setUploadedImage] = useState<string>(
     currentImage || ""
@@ -41,7 +43,7 @@ export function ImageUploadButton({
   const compressImage = async (file: File): Promise<File> => {
     const options = {
       maxSizeMB: 1.5, // 最大檔案大小
-      maxWidthOrHeight: 1920, // 最大寬度或高度
+      maxWidthOrHeight: composeSize ? composeSize : 1920, // 最大寬度或高度
       useWebWorker: true, // 使用 Web Worker 提升性能
       fileType: file.type, // 保持原始檔案類型
     };

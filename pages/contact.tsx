@@ -4,8 +4,15 @@ import { api } from "@/utils/api";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ImageUploadButton } from "@/components/ImageUploadButton";
+import VideoUploadButton from "@/components/VideoUploadButton";
 import { RepairFormData } from "@/types/types";
 import { motion } from "framer-motion";
+import {
+  COMMUNITY_LIST,
+  CONTACT_TIME_LIST,
+  REPAIR_AREA_LIST,
+  REPAIR_CLASS_LIST,
+} from "@/constants";
 
 interface ContactInfo {
   address: string;
@@ -14,28 +21,36 @@ interface ContactInfo {
   businessHours: string;
   mapUrl: string;
 }
+
 export default function Contact() {
   const [formData, setFormData] = useState<RepairFormData>({
-    type: "公設",
     unit: "",
     contactName: "",
     phone: "",
     content: "",
     images: [],
-    date: new Date().toISOString().split("T")[0], // 自動帶入今天日期
+    date: new Date().toISOString().split("T")[0],
     status: "待處理",
+    community_code: "",
+    community_name: "",
+    email: "",
+    contact_time: "",
+    repair_area: "",
+    repair_class: "",
+    videoId: null,
   });
 
   const [resetImages, setResetImages] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isVerified, setIsVerified] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { mutate: createRepair, isLoading } = api.repair.create.useMutation({
     onSuccess: () => {
-      toast("維修單建立成功，我們會盡快處理您的維修需求", {
+      toast.success("報修單已傳送，我們會盡快處理您的維修需求", {
         position: "top-center",
       });
-      // 重置表單
       setFormData({
-        type: "公設",
         unit: "",
         contactName: "",
         phone: "",
@@ -43,9 +58,16 @@ export default function Contact() {
         images: [],
         date: new Date().toISOString().split("T")[0],
         status: "待處理",
+        community_code: "",
+        community_name: "",
+        email: "",
+        contact_time: "",
+        repair_area: "",
+        repair_class: "",
+        videoId: null,
       });
       setUploadedImages([]);
-      setResetImages(true); // 觸發重置
+      setResetImages(true);
       recaptchaRef.current?.reset();
       setIsVerified(false);
     },
@@ -56,15 +78,32 @@ export default function Contact() {
     },
   });
 
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const [isVerified, setIsVerified] = useState(false);
-
   const handleRecaptchaChange = (token: string | null) => {
     setIsVerified(!!token);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleFormChange = (field: keyof RepairFormData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(formData.email)) {
+      toast("請輸入有效的電子郵件地址", { position: "top-center" });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
 
     if (!isVerified) {
       toast("請完成人機驗證", {
@@ -73,40 +112,51 @@ export default function Contact() {
       return;
     }
 
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       await createRepair({
-        type: formData.type,
-        unit: formData.unit,
-        contactName: formData.contactName,
-        phone: formData.phone,
-        content: formData.content,
-        date: formData.date,
-        images: formData.images,
+        ...formData,
         status: "待處理",
+        community_code: formData.community_code || "",
+        community_name: formData.community_name || "",
+        email: formData.email || "",
+        videoId: formData.videoId,
+        images: formData.images || [],
       });
 
-      // 重置 reCAPTCHA
       recaptchaRef.current?.reset();
       setIsVerified(false);
     } catch {
       console.error("提交失敗");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  // 聯絡資訊 state
+  const handleFormSubmit = () => {
+    handleSubmit();
+  };
+
   const [contactInfo] = useState<ContactInfo>({
-    address: "325桃園市龍潭區工二路一段96巷9號",
+    address: "325桃園市龍潭區工二路一段96巷11號",
     phone: "03-470-6501",
     email: "service@gaoch.com.tw",
     businessHours: "週一至週五 09:00-17:00",
     mapUrl:
-      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14477.118789727136!2d121.2048513!3d24.8884394!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34683ccfdddb9505%3A0x62a11cb420799f3f!2z6auY6Kqg6ZaL55m85bu66Kit5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1732854454586!5m2!1szh-TW!2stw",
+      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d115741.86256370951!2d121.1468398!3d24.9683871!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34683ccfdddb9505%3A0x95c3c5c3cee035be!2z6auY6Kqg5a-m5qWt5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1737627460364!5m2!1szh-TW!2stw",
   });
 
-  // 處理圖片變更
   const [uploadedImages, setUploadedImages] = useState<
     Array<{ url: string; id: number }>
   >([]);
+  const [uploadedVideo, setUploadedVideo] = useState<{
+    url: string;
+    id: number;
+  } | null>(null);
 
   const handleImagesChange = (url: string, imageId?: number) => {
     if (uploadedImages.length >= 2) {
@@ -121,6 +171,16 @@ export default function Contact() {
       setFormData({
         ...formData,
         images: [...(formData.images || []), imageId],
+      });
+    }
+  };
+
+  const handleVideoChange = (url: string, videoId?: number) => {
+    if (url && videoId) {
+      setUploadedVideo({ url, id: videoId });
+      setFormData({
+        ...formData,
+        videoId,
       });
     }
   };
@@ -142,19 +202,14 @@ export default function Contact() {
             backgroundImage: "url(https://web.forestdev.work/gaoch/bg/02.png)",
           }}
         >
-          {/* black 遮罩 */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
           <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
             Contact Us <span className="text-white text-xl"> / 聯絡我們</span>
           </div>
         </motion.div>
         <div className="container mx-auto px-4 mt-[5%]">
-          {/* 標題圖片 */}
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* 左側：聯絡資訊和地圖 */}
             <div className="space-y-8">
-              {/* 聯絡資訊 */}
               <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-6">聯絡資訊</h2>
                 <div className="space-y-4">
@@ -252,7 +307,6 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Google Map */}
               <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-6">地圖位置</h2>
                 <div className="aspect-video w-full">
@@ -268,7 +322,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* 右側：報修表 */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <div className="flex flex-col justify-center items-center mb-6">
                 <h2 className="text-2xl font-bold mb-2">線上報修</h2>
@@ -277,28 +330,34 @@ export default function Contact() {
                 </p>
               </div>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* 報修類型 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    報修類型 *
+                    社區 *
                   </label>
                   <select
                     required
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-                    value={formData.type}
-                    onChange={(e) =>
+                    value={formData.community_code}
+                    onChange={(e) => {
+                      const selectedCommunity = COMMUNITY_LIST.find(
+                        (c) => c.code === e.target.value
+                      );
                       setFormData({
                         ...formData,
-                        type: e.target.value as "公設" | "非公設",
-                      })
-                    }
+                        community_code: e.target.value,
+                        community_name: selectedCommunity?.name || "",
+                      });
+                    }}
                   >
-                    <option value="公設">公設</option>
-                    <option value="非公設">非公設</option>
+                    <option value="">請選擇社區</option>
+                    {COMMUNITY_LIST.map((community) => (
+                      <option key={community.code} value={community.code}>
+                        {community.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
-                {/* 戶別 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     戶別 *
@@ -306,16 +365,13 @@ export default function Contact() {
                   <input
                     type="text"
                     required
-                    placeholder="例：A棟-1F-1號"
+                    placeholder="e.g. A棟-1F-1號"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                     value={formData.unit}
-                    onChange={(e) =>
-                      setFormData({ ...formData, unit: e.target.value })
-                    }
+                    onChange={(e) => handleFormChange("unit", e.target.value)}
                   />
                 </div>
 
-                {/* 聯絡人 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     聯絡人 *
@@ -326,12 +382,11 @@ export default function Contact() {
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                     value={formData.contactName}
                     onChange={(e) =>
-                      setFormData({ ...formData, contactName: e.target.value })
+                      handleFormChange("contactName", e.target.value)
                     }
                   />
                 </div>
 
-                {/* 聯絡電話 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     聯絡電話 *
@@ -341,28 +396,111 @@ export default function Contact() {
                     required
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                     value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
+                    onChange={(e) => handleFormChange("phone", e.target.value)}
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. 123@abc.com"
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
+                    value={formData.email}
+                    onChange={(e) => handleFormChange("email", e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    方便聯絡時間 *
+                  </label>
+                  <select
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
+                    value={formData.contact_time}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        contact_time: e.target.value,
+                      });
+                    }}
+                  >
+                    <option value="">方便聯絡時間</option>
+                    {CONTACT_TIME_LIST.map((item) => (
+                      <option key={item.name} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    區域 *
+                  </label>
+                  <select
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
+                    value={formData.repair_area}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        repair_area: e.target.value,
+                      });
+                    }}
+                  >
+                    <option value="">區域</option>
+                    {REPAIR_AREA_LIST.map((item) => (
+                      <option key={item.name} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    類別 *
+                  </label>
+                  <select
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
+                    value={formData.repair_class}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        repair_class: e.target.value,
+                      });
+                    }}
+                  >
+                    <option value="">類別</option>
+                    {REPAIR_CLASS_LIST.map((item) => (
+                      <option key={item.name} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 {/* 維修內容 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    維修內容描述 *
+                    維修內容 *
                   </label>
-                  <textarea
+                  <input
+                    type="text"
                     required
-                    rows={5}
+                    placeholder="e.g. 浴室外側地板滲水"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                     value={formData.content}
                     onChange={(e) =>
-                      setFormData({ ...formData, content: e.target.value })
+                      handleFormChange("content", e.target.value)
                     }
-                  ></textarea>
+                  />
                 </div>
-
                 {/* 圖片上傳 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -393,6 +531,32 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* 影片上傳 */}
+                {/* <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    影片上傳
+                    <p className="text-xs text-gray-500">
+                      *僅限MP4格式，檔案大小請勿超過100MB
+                    </p>
+                  </label>
+                  <VideoUploadButton
+                    onVideoChange={handleVideoChange}
+                    inputId="video-upload"
+                    reset={resetImages}
+                    completedWord="影片上傳完成"
+                    isSubmitting={isSubmitting}
+                    onSubmit={handleFormSubmit}
+                  />
+                  {uploadedVideo && (
+                    <div className="mt-2">
+                      <video
+                        src={uploadedVideo.url}
+                        controls
+                        className="w-full rounded-lg"
+                      />
+                    </div>
+                  )}
+                </div> */}
                 {/* 填單日期 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -406,22 +570,23 @@ export default function Contact() {
                   />
                 </div>
 
-                {/* 在送出按鈕前添加 reCAPTCHA */}
                 <div className="flex justify-center">
                   <ReCAPTCHA
                     ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
                     onChange={handleRecaptchaChange}
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isLoading || !isVerified}
-                  className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLoading ? "處理中..." : "送出報修"}
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    disabled={isLoading || !isVerified}
+                    className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? "提交中..." : "提交"}
+                  </button>
+                </div>
               </form>
             </div>
           </div>
