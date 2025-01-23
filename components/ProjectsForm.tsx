@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -30,6 +31,14 @@ export function ProjectsForm({
     },
   });
 
+  const [resetImages, setResetImages] = useState(false);
+
+  const handleFormSubmit = (data: ProjectFormData) => {
+    onSubmit(data);
+    setResetImages(true);
+    setTimeout(() => setResetImages(false), 0);
+  };
+
   // const handleImageUpload = useCallback(
   //   (url: string, imageId?: number) => {
   //     setValue("coverImageId", imageId || null);
@@ -38,7 +47,10 @@ export function ProjectsForm({
   // );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className=" grid grid-cols-2 gap-4">
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className=" grid grid-cols-2 gap-4"
+    >
       <div className="space-y-1">
         <label htmlFor="title" className="block text-sm font-medium">
           標題
@@ -274,6 +286,7 @@ export function ProjectsForm({
             completedWord="上傳完成，儲存後將使用以下圖片"
             inputId="bg-image-upload"
             composeSize={500}
+            reset={resetImages}
           />
         </div>
       </div>

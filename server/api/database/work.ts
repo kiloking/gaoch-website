@@ -58,3 +58,10 @@ export const updateWork = async (id: number, data: createWorkType) => {
     console.error(error);
   }
 };
+
+//del work
+export const deleteWork = async (id: number) => {
+  return await db.work.delete({
+    where: { id },
+  });
+};

@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { createWork, getAllWorks, updateWork } from "../database/work";
+import {
+  createWork,
+  deleteWork,
+  getAllWorks,
+  updateWork,
+} from "../database/work";
 import { createWorkSchema } from "./types";
 
 export const worksRouter = createTRPCRouter({
@@ -73,5 +78,10 @@ export const worksRouter = createTRPCRouter({
       ]);
 
       return { prev, next };
+    }),
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      return await deleteWork(input.id);
     }),
 });

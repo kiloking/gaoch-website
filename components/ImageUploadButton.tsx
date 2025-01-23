@@ -35,8 +35,9 @@ export function ImageUploadButton({
   useEffect(() => {
     if (reset) {
       setUploadedImage("");
+      onImagesChange("", undefined);
     }
-  }, [reset]);
+  }, [reset, onImagesChange]);
   const getSignedUrl = api.upload.getSignedUrl.useMutation();
   const createImage = api.upload.createImage.useMutation();
 

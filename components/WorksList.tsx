@@ -1,6 +1,15 @@
 import { api } from "@/utils/api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
 import { WorkForm } from "./WorkForm";
 import { WorkFormData } from "@/types/types";
 import { toast } from "sonner";
@@ -31,6 +40,7 @@ export function WorksList() {
       editReset();
     },
   });
+  const deleteWork = api.works.delete.useMutation();
 
   const { reset } = useForm<WorkFormData>();
 
@@ -60,6 +70,35 @@ export function WorksList() {
 
     console.log("Updating with data:", updateData); // 調試用
     updateWork({ id: selectedWorkId!, data: updateData });
+  };
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [workToDelete, setWorkToDelete] = useState<number | null>(null);
+
+  const handleDelete = (id: number) => {
+    setWorkToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!workToDelete) return;
+
+    deleteWork.mutate(
+      { id: workToDelete },
+      {
+        onSuccess: () => {
+          utils.works.getAll.invalidate();
+          toast("刪除成功", {
+            position: "top-center",
+          });
+          setDeleteDialogOpen(false);
+        },
+        onError: () => {
+          toast("刪除失敗", {
+            position: "top-center",
+          });
+        },
+      }
+    );
   };
 
   if (isLoading) return <div>載入中...</div>;
@@ -159,6 +198,38 @@ export function WorksList() {
                   >
                     編輯
                   </button>
+
+                  <button
+                    onClick={() => handleDelete(work.id)}
+                    className="text-red-600 hover:text-red-900 ml-2"
+                  >
+                    刪除
+                  </button>
+
+                  <Dialog
+                    open={deleteDialogOpen}
+                    onOpenChange={setDeleteDialogOpen}
+                  >
+                    <DialogContent className="bg-white backdrop-blur-sm bg-opacity-90">
+                      <DialogHeader>
+                        <DialogTitle>確認刪除</DialogTitle>
+                        <DialogDescription>
+                          您確定要刪除此業績嗎？此操作無法復原。
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <Button
+                          variant="outline"
+                          onClick={() => setDeleteDialogOpen(false)}
+                        >
+                          取消
+                        </Button>
+                        <Button variant="destructive" onClick={confirmDelete}>
+                          確認刪除
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </td>
               </tr>
             ))}

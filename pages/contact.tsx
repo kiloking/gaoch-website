@@ -66,6 +66,9 @@ export default function Contact() {
       });
       setUploadedImages([]);
       setResetImages(true);
+      setTimeout(() => {
+        setResetImages(false);
+      }, 0);
       recaptchaRef.current?.reset();
       setIsVerified(false);
     },

@@ -55,3 +55,14 @@ export const updateProject = async (id: number, data: createProjectType) => {
     console.error(error);
   }
 };
+
+//del project
+export const deleteProject = async (id: number) => {
+  try {
+    return await db.project.delete({
+      where: { id },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};

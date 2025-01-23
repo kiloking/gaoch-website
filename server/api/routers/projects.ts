@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createProjectSchema } from "./types";
 import {
   createProject,
+  deleteProject,
   getAllProjects,
   updateProject,
 } from "../database/projects";
@@ -38,5 +39,11 @@ export const projectRouter = createTRPCRouter({
     .input(z.object({ id: z.number(), data: createProjectSchema }))
     .mutation(async ({ input }) => {
       return await updateProject(input.id, input.data);
+    }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      return await deleteProject(input.id);
     }),
 });
