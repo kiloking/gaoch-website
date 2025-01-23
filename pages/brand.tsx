@@ -24,7 +24,7 @@ export default function Brand() {
           </div>
         </motion.div>
 
-        <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full relative pb-[10%]">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full relative pb-[8%]">
           <AboutNavbar />
 
           {/* if brand Component if history Component if partners Component */}

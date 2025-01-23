@@ -53,6 +53,7 @@ export function WorkForm({
           <input
             {...register("title", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black text-xl p-2"
+            placeholder="e.g. 高誠君品"
           />
         </div>
         <div className="col-span-2">
@@ -63,6 +64,7 @@ export function WorkForm({
             {...register("description", { required: true })}
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 位於桃園市大園區，共有99戶105車位，建地面積800坪，樓層地上13層地下12層，格局26-39坪"
           />
         </div>
         <div>
@@ -72,6 +74,7 @@ export function WorkForm({
           <input
             {...register("year", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 2024"
           />
         </div>
         <div>
@@ -81,6 +84,7 @@ export function WorkForm({
           <input
             {...register("location", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 大園區"
           />
         </div>
         <div>
@@ -90,6 +94,7 @@ export function WorkForm({
           <input
             {...register("address", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 桃園市大園區"
           />
         </div>
         <div>
@@ -99,6 +104,7 @@ export function WorkForm({
           <input
             {...register("area", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 800坪"
           />
         </div>
         <div>
@@ -108,6 +114,7 @@ export function WorkForm({
           <input
             {...register("units", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 99戶105車"
           />
         </div>
         <div>
@@ -117,6 +124,7 @@ export function WorkForm({
           <input
             {...register("floors", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 地上13層，地下12層"
           />
         </div>
         <div>
@@ -126,6 +134,7 @@ export function WorkForm({
           <input
             {...register("houseTypes")}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 26-39坪"
           />
         </div>
         <div>
@@ -135,6 +144,7 @@ export function WorkForm({
           <input
             {...register("architect", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 高誠建築師事務所"
           />
         </div>
         <div>
@@ -144,6 +154,7 @@ export function WorkForm({
           <input
             {...register("company", { required: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            placeholder="e.g. 康文在建築師事務所"
           />
         </div>
         <div className="col-span-1">
@@ -154,7 +165,7 @@ export function WorkForm({
           <input
             {...register("ytVideoUrl")}
             type="url"
-            placeholder="例：https://www.youtube.com/watch?v=..."
+            placeholder="e.g. https://www.youtube.com/watch?v=..."
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
           />
         </div>

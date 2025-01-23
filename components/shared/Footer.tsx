@@ -11,12 +11,12 @@ import {
 const Footer = () => {
   return (
     <>
-      <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-slate-300 ">
-        <div className="w-24">
+      <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-zinc-200 ">
+        <div className="w-[20%]">
           <Image
             src="https://web.forestdev.work/gaoch/logo.svg"
             alt="logo"
-            width={250}
+            width={350}
             height={24}
             priority={false}
           />

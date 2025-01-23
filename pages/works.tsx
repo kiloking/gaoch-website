@@ -10,7 +10,7 @@ export default function Works() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px] bg-zinc-100">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px] bg-zinc-100 pb-[8%]">
         <motion.div
           initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}

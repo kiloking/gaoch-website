@@ -183,7 +183,7 @@ export default function Contact() {
   return (
     <Layout>
       <div
-        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px]"
+        className="min-h-screen bg-cover bg-center bg-no-repeat pt-[0px] pb-[8%]"
         style={{
           backgroundImage: "url(https://web.forestdev.work/gaoch/s1-1_bg.png)",
         }}
