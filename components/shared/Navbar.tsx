@@ -103,7 +103,7 @@ const Navbar = () => {
               <Image
                 src="https://web.forestdev.work/gaoch/logo.svg"
                 alt="image"
-                width={300}
+                width={330}
                 height={24}
                 priority={false}
               />

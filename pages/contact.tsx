@@ -101,6 +101,57 @@ export default function Contact() {
     return true;
   };
 
+  // 添加寄信函數
+  const sendEmail = async (formData: RepairFormData) => {
+    const to = "service@gaoch.com.tw";
+
+    const subject = `【高誠】線上報修表單 -${formData.contactName} | ${formData.community_name} (${formData.community_code})`;
+
+    // 格式化表單內容為文字
+    const text = `
+社區：${formData.community_name} (${formData.community_code})
+戶別：${formData.unit}
+聯絡人：${formData.contactName}
+聯絡電話：${formData.phone}
+Email：${formData.email}
+方便聯絡時間：${formData.contact_time}
+區域：${formData.repair_area}
+類別：${formData.repair_class}
+維修內容：${formData.content}
+填單日期：${formData.date}
+圖片數量：${formData.images.length}
+`;
+
+    const sendData = {
+      to: to,
+      subject: subject,
+      text: text,
+    };
+
+    try {
+      const response = await fetch(
+        "https://www.maizizi.vaserver.com/api/mail_api.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sendData),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) {
+        console.error("Email sending failed:", result);
+        // 不影響主流程，只記錄錯誤
+      }
+    } catch (error) {
+      console.error("Email sending error:", error);
+      // 不影響主流程，只記錄錯誤
+    }
+  };
+
+  // 修改 handleSubmit 函數
   const handleSubmit = async (e?: FormEvent) => {
     if (e) {
       e.preventDefault();
@@ -118,6 +169,7 @@ export default function Contact() {
     }
 
     try {
+      // 先發送到資料庫
       await createRepair({
         ...formData,
         status: "待處理",
@@ -127,6 +179,9 @@ export default function Contact() {
         videoId: formData.videoId,
         images: formData.images || [],
       });
+
+      // 同時發送郵件通知
+      await sendEmail(formData);
 
       recaptchaRef.current?.reset();
       setIsVerified(false);

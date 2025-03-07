@@ -95,8 +95,8 @@ export default function Projects() {
                       <h3 className="font-bold mb-2 flex justify-between items-end w-full">
                         <div className="text-2xl  "> {project.title}</div>
 
-                        <div className="flex items-center   text-red-800">
-                          總價 {project.price}
+                        <div className="flex items-center   text-red-800 invisible">
+                          {project.price ? "" : ""}
                         </div>
                       </h3>
                       <div className="space-y-2 text-gray-600 mt-4 w-full ">

@@ -153,7 +153,7 @@ export default function RepairDetail() {
             </div>
 
             {/* 表格主體 - 6行 */}
-            {[...Array(6)].map((_, index) => (
+            {[...Array(2)].map((_, index) => (
               <React.Fragment key={index}>
                 <div className="col-span-5 p-2 border-b border-r border-black min-h-[40px]"></div>
                 <div className="col-span-1 p-2 border-b border-r border-black"></div>
@@ -206,7 +206,7 @@ export default function RepairDetail() {
           {/* 維修情形及結果 */}
           <div className="p-4 border-b border-black">
             <div>2. 維修情形及結果：</div>
-            <div className="min-h-[150px]"></div>
+            <div className="min-h-[50px]"></div>
           </div>
 
           {/* 簽核表格 */}

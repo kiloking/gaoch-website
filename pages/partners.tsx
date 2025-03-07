@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { RELATED_PARTNERS } from "@/constants";
 import { AboutNavbar } from "@/components/AboutNavbar";
+import { ExternalLink } from "lucide-react";
 
 export default function Partners() {
   return (
@@ -24,7 +25,7 @@ export default function Partners() {
           </div>
         </motion.div>
 
-        <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full relative">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full relative mb-[5%]">
           <AboutNavbar />
           {/* 左側導航和企業列表 */}
           <div className="w-full h-full flex items-start justify-center">
@@ -35,10 +36,15 @@ export default function Partners() {
                   {RELATED_PARTNERS.map((item, index) => (
                     <div
                       key={index}
-                      className="bg-white p-2 rounded-lg shadow-lg hover:bg-slate-200 hover:shadow-xl transition-shadow duration-500"
+                      className="bg-white p-4 rounded-lg shadow-lg hover:bg-slate-200 hover:shadow-xl transition-shadow duration-500"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-20 aspect-square rounded-md overflow-hidden">
+                        <motion.div
+                          initial={{ opacity: 0, y: 0 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="w-20 aspect-square rounded-md overflow-hidden"
+                        >
                           <Image
                             src={`https://web.forestdev.work/gaoch/company/${item.img}?v=1`}
                             alt={item.name}
@@ -46,26 +52,36 @@ export default function Partners() {
                             height={100}
                             className="object-cover object-top w-full h-full"
                           />
-                        </div>
-                        <h3 className="text-xl font-semibold ">{item.name}</h3>
+                        </motion.div>
+                        <motion.h3
+                          initial={{ opacity: 0, y: 0 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.5 }}
+                          className="text-xl font-semibold flex items-center gap-2 "
+                        >
+                          {item.name}
+                          <a href={item.link} target="_blank">
+                            <ExternalLink size={16} />
+                          </a>
+                        </motion.h3>
                       </div>
                       {item.description && (
-                        <div className="mt-4">
+                        <div className="mt-4 p-2">
                           <div className="text-gray-900 font-semibold mb-1">
                             團隊介紹
                           </div>
-                          <div className="text-gray-600 mb-1">
+                          <div className="text-gray-600 mb-1  tracking-wider">
                             {item.description}
                           </div>
                         </div>
                       )}
 
                       {item.educational.length > 0 && (
-                        <div className="mt-4">
+                        <div className="mt-4 p-2">
                           <div className="text-gray-900 font-semibold mb-1">
                             學歷：
                           </div>
-                          <div className="text-gray-600 mb-1">
+                          <div className="text-gray-600 mb-1  tracking-wider">
                             {item.educational.map((item, index) => (
                               <p key={index} className="mb-1">
                                 {item}
@@ -76,11 +92,11 @@ export default function Partners() {
                       )}
 
                       {item.projects.length > 0 && (
-                        <div className="mt-4">
+                        <div className="mt-4 p-2">
                           <div className="text-gray-900 font-semibold mb-1">
                             簡歷：
                           </div>
-                          <div className="text-gray-600 mb-1">
+                          <div className="text-gray-600 mb-1  tracking-wider">
                             {item.projects.map((project, index) => (
                               <p key={index} className="mb-1">
                                 {project}

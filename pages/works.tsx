@@ -68,12 +68,38 @@ export default function Works() {
                               </div>
                             </div>
                           </div>
-                          <div className=" inset-0 transform  scale-[1] origin-center aspect-[14/9] rounded-md overflow-hidden">
+                          <div className="inset-0 transform scale-[1] origin-center aspect-[14/9] rounded-md overflow-hidden relative group">
                             <Image
                               src={work.coverImage?.url || ""}
                               alt={work.title}
                               fill
                               className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+
+                            {/* 更明顯的傾斜反光 */}
+                            <div
+                              className="absolute inset-0 pointer-events-none shine-effect"
+                              style={{
+                                background:
+                                  "linear-gradient(115deg, transparent 45%, rgba(255,255,255,0.3) 45%, rgba(255,255,255,0.5) 45%)",
+                                transform: "skewX(0deg) translateX(0%)",
+                                opacity: 0.4,
+                              }}
+                            />
+
+                            {/* 添加 CSS 動畫 */}
+                            <style
+                              dangerouslySetInnerHTML={{
+                                __html: `
+                                .shine-effect {
+                                  transition: transform 0.8s ease-in-out;
+                                }
+                                .group:hover .shine-effect {
+                                  transition: transform 0.5s ease-out;
+                                  transform: skewX(-5deg) translateX(100%) !important;
+                                }
+                              `,
+                              }}
                             />
                           </div>
                         </div>

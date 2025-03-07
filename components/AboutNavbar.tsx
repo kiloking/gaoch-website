@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -17,7 +18,12 @@ export function AboutNavbar() {
   const router = useRouter();
 
   return (
-    <div className="flex gap-12 py-10">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex gap-12 py-10"
+    >
       {navItems.map((item) => (
         <Link
           key={item.href}
@@ -39,6 +45,6 @@ export function AboutNavbar() {
           <div className="text-black text-sm">{item.enLabel}</div>
         </Link>
       ))}
-    </div>
+    </motion.div>
   );
 }
