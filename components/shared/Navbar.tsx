@@ -103,7 +103,7 @@ const Navbar = () => {
               <Image
                 src="https://web.forestdev.work/gaoch/logo.svg"
                 alt="image"
-                width={330}
+                width={350}
                 height={24}
                 priority={false}
               />
@@ -111,7 +111,7 @@ const Navbar = () => {
               <Image
                 src="https://web.forestdev.work/gaoch/logo.svg"
                 alt="image"
-                width={330}
+                width={350}
                 height={24}
                 priority={false}
               />
@@ -119,7 +119,7 @@ const Navbar = () => {
           </Link>
 
           <ul
-            className={`flex flex-center w-[80%] justify-center space-x-10  bg-white/10  border-b border-white/30 rounded-full backdrop-blur-md  ${
+            className={`flex flex-center w-[80%] justify-center space-x-10  bg-black/70  border-b border-white/30 rounded-full backdrop-blur-m  ${
               type === "home" ? "text-white " : " text-black "
             } `}
             style={{
@@ -131,10 +131,10 @@ const Navbar = () => {
               return (
                 <li
                   key={`navtitle` + index}
-                  className={`group relative dropdown px-4 py-2 ${
+                  className={`group relative dropdown px-4 py-2 text-lg ${
                     whiteTextPages.includes(type)
-                      ? "text-white/70"
-                      : "text-white/70"
+                      ? "text-white/80"
+                      : "text-white/80"
                   }`}
                 >
                   <a

@@ -110,7 +110,7 @@ export default function Projects() {
                         </div>
                         <div className="flex items-center gap-2  justify-between">
                           <div className="">規劃坪數</div>
-                          <div className=" text-black">{project.price}</div>
+                          <div className=" text-black">{project.size}</div>
                         </div>
                         <div className="flex items-center gap-2 justify-between">
                           <div className="">規劃樓層</div>

@@ -103,7 +103,7 @@ export default function Contact() {
 
   // 添加寄信函數
   const sendEmail = async (formData: RepairFormData) => {
-    const to = "service@gaoch.com.tw";
+    const to = "kao.4706501@gmail.com";
 
     const subject = `【高誠】線上報修表單 -${formData.contactName} | ${formData.community_name} (${formData.community_code})`;
 
@@ -197,7 +197,7 @@ Email：${formData.email}
   const [contactInfo] = useState<ContactInfo>({
     address: "325桃園市龍潭區工二路一段96巷11號",
     phone: "03-470-6501",
-    email: "service@gaoch.com.tw",
+    email: "kao.4706501@gmail.com",
     businessHours: "週一至週五 09:00-17:00",
     mapUrl:
       "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d115741.86256370951!2d121.1468398!3d24.9683871!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34683ccfdddb9505%3A0x95c3c5c3cee035be!2z6auY6Kqg5a-m5qWt5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1737627460364!5m2!1szh-TW!2stw",
