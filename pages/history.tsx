@@ -27,11 +27,11 @@ export default function History() {
         <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full relative">
           <AboutNavbar />
           {/* 左側導航和企業列表 */}
-          <div className="w-full h-full flex items-start justify-center">
-            <div className="w-2/3 h-full">
+          <div className="w-full h-full flex flex-col md:flex-row items-start justify-center">
+            <div className="w-full md:w-2/3 h-full">
               {/* 頂部導航 */}
-              <div className="pt-[%] px-[5%]">
-                <div className=" pt-5 grid grid-cols-2 gap-5">
+              <div className="py-[5%] md:py-[0%] px-[5%]">
+                <div className=" pt-5 grid grid-cols-1 md:grid-cols-2  gap-5">
                   {RELATED_COMPANIES.map((item, index) => (
                     <div
                       key={index}
@@ -71,7 +71,7 @@ export default function History() {
             </div>
 
             {/* 右側圖片 */}
-            <div className="w-1/2 h-full relative  items-center justify-center">
+            <div className="w-full md:w-1/2 h-full relative  items-center justify-center">
               <motion.div
                 initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}

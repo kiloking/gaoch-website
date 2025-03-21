@@ -32,7 +32,7 @@ export default function Partners() {
             <div className="w-full h-full">
               {/* 頂部導航 */}
               <div className="pt-[%] px-[5%]">
-                <div className=" pt-5 grid grid-cols-3 gap-5">
+                <div className=" pt-5 grid grid-cols-1 md:grid-cols-3 gap-5">
                   {RELATED_PARTNERS.map((item, index) => (
                     <div
                       key={index}
