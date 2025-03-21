@@ -12,11 +12,11 @@ const Footer = () => {
   return (
     <>
       <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-zinc-200 ">
-        <div className="w-[20%]">
+        <div className="w-[70%] md:w-[20%]">
           <Image
-            src="https://web.forestdev.work/gaoch/logo.svg"
+            src="https://web.forestdev.work/gaoch/logo02.svg"
             alt="logo"
-            width={350}
+            width={400}
             height={24}
             priority={false}
           />

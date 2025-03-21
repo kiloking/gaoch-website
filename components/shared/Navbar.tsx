@@ -43,9 +43,9 @@ const Navbar = () => {
           <div className="flex justify-between items-center p-4  text-black">
             <Link href="/" className="text-xl font-bold">
               <Image
-                src="https://web.forestdev.work/gaoch/logo.svg"
+                src="https://web.forestdev.work/gaoch/logo02.svg"
                 alt="logo"
-                width={250}
+                width={280}
                 height={24}
                 priority={false}
               />
@@ -101,17 +101,17 @@ const Navbar = () => {
           <Link href="/" className="w-full">
             {type === "home" ? (
               <Image
-                src="https://web.forestdev.work/gaoch/logo.svg"
+                src="https://web.forestdev.work/gaoch/logo02.svg"
                 alt="image"
-                width={350}
+                width={400}
                 height={24}
                 priority={false}
               />
             ) : (
               <Image
-                src="https://web.forestdev.work/gaoch/logo.svg"
+                src="https://web.forestdev.work/gaoch/logo02.svg"
                 alt="image"
-                width={350}
+                width={400}
                 height={24}
                 priority={false}
               />
