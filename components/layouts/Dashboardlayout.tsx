@@ -9,16 +9,17 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
     { id: "repair", name: "報修管理", path: "/dashboard/" },
     { id: "works", name: "業績管理", path: "/dashboard/works" },
     { id: "newCase", name: "新案管理", path: "/dashboard/projects" },
+    { id: "news", name: "新聞管理", path: "/dashboard/news" },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center font-bold text-xl">
-                管理系統
+                後台管理系統
               </div>
             </div>
             <div className="flex items-center">

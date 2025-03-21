@@ -30,6 +30,7 @@
     "@types/aos": "^3.0.7",
     "aos": "^2.3.4",
     "browser-image-compression": "^2.0.2",
+    "cheerio": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
