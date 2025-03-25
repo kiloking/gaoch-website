@@ -378,8 +378,13 @@ Email：${formData.email}
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <div className="flex flex-col justify-center items-center mb-6">
                 <h2 className="text-2xl font-bold mb-2">線上報修</h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 text-center">
                   此表單適用於住戶進行設備報修，若有其他業務需求請來信或來電洽詢。
+                  <br />
+                  <span className="font-bold">
+                    保固期滿後，公司秉持永續經營理念持續提供服務， <br />
+                    謹向住戶/管委會酌收工本 費及管理服務費。
+                  </span>
                 </p>
               </div>
               <form onSubmit={handleSubmit} className="space-y-6">
