@@ -92,6 +92,7 @@ export function ProjectsForm({
         >
           <option value="">選擇狀態</option>
           <option value="熱銷中">熱銷中</option>
+          <option value="已完銷">已完銷</option>
           <option value="即將完工">即將完工</option>
           <option value="即將開案">即將開案</option>
         </select>
