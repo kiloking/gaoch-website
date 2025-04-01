@@ -51,7 +51,7 @@ export const repairSchema = z.object({
 export const createProjectSchema = z.object({
   title: z.string(),
   location: z.string(),
-  status: z.enum(["熱銷中", "即將完工", "即將開案"]),
+  status: z.enum(["熱銷中", "即將完工", "即將開案", "已完銷"]),
   coverImageId: z.number().nullable().optional(),
   price: z.string(),
   link: z.string(),

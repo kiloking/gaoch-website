@@ -49,7 +49,7 @@ export function ProjectsList() {
     const createData = {
       ...data,
       coverImageId: data.coverImageId ? data.coverImageId : null,
-      status: data.status as "熱銷中" | "即將完工" | "即將開案",
+      status: data.status as "熱銷中" | "即將完工" | "即將開案" | "已完銷",
     };
     createProject({ data: createData });
 
@@ -64,7 +64,7 @@ export function ProjectsList() {
     const updateData = {
       ...data,
       coverImageId: data.coverImageId ? data.coverImageId : null,
-      status: data.status as "熱銷中" | "即將完工" | "即將開案",
+      status: data.status as "熱銷中" | "即將完工" | "即將開案" | "已完銷",
     };
 
     updateProject({ id: selectedProjectId!, data: updateData });
