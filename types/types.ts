@@ -36,7 +36,7 @@ export type ProjectFormData = {
 };
 
 //statusType
-export type ProjectsStatusType = "熱銷中" | "即將開工" | "即將開案";
+export type ProjectsStatusType = "熱銷中" | "即將開工" | "即將開案" | "已完銷";
 
 export type ImageType = {
   url: string;
