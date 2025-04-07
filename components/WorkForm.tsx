@@ -1,7 +1,8 @@
 import { WorkFormData } from "@/types/types";
 import { ImageUploadButton } from "./ImageUploadButton";
 import { useForm } from "react-hook-form";
-
+import { useState } from "react";
+import { MultipleImageUpload } from "@/components/MultipleImageUpload";
 interface WorkFormProps {
   initialData?: WorkFormData;
   onSubmit: (data: WorkFormData) => void;
@@ -22,12 +23,17 @@ export function WorkForm({
       bgimgId: initialData?.bgimgId || undefined,
       coverImage: initialData?.coverImage || undefined,
       bgimg: initialData?.bgimg || undefined,
+      images: initialData?.images || [],
     },
   });
 
   // 監聽圖片欄位的值
   const coverImageId = watch("coverImageId");
   const bgimgId = watch("bgimgId");
+
+  // 在 WorkForm component 中添加 state
+  const [showSaveReminder, setShowSaveReminder] = useState(false);
+  const [markedForDeletion, setMarkedForDeletion] = useState<number[]>([]);
 
   // 處理取消時的確認
   const handleCancel = () => {
@@ -270,6 +276,91 @@ export function WorkForm({
                 composeSize={1920}
               />
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            其他圖片
+            <span className="text-xs text-gray-500 ml-2">
+              （建議尺寸：960x540px）
+            </span>
+            <div className="text-xs text-gray-500">用於作品單頁</div>
+          </label>
+          <div className="mt-1 rounded-sm bg-gray-100 border-zinc-300 border p-4">
+            <>
+              {initialData?.images && initialData?.images.length > 0 && (
+                <div className="flex items-  flex-col relative my-1">
+                  <p className="text-sm text-gray-500">當前圖片</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {initialData.images.map((image) => (
+                      <div
+                        key={image.id}
+                        className="w-full relative aspect-video overflow-hidden"
+                      >
+                        <div className="w-full aspect-video overflow-hidden">
+                          <img
+                            src={image.url}
+                            alt="當前圖片"
+                            className="w-full object-cover rounded overflow-hidden"
+                          />
+                          {markedForDeletion.includes(image.id) && (
+                            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                              <span className="text-white text-sm">
+                                將被移除
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="bg-red-500 text-white ml-2 absolute bottom-0 right-0 p-1 rounded-md text-xs"
+                          onClick={() => {
+                            if (
+                              confirm("確定要刪除這張圖片嗎？請記得儲存變更。")
+                            ) {
+                              setMarkedForDeletion((prev) => [
+                                ...prev,
+                                image.id,
+                              ]);
+                              setValue(
+                                "images",
+                                initialData.images.filter(
+                                  (img) => img.id !== image.id
+                                )
+                              );
+                              setShowSaveReminder(true);
+                              setTimeout(
+                                () => setShowSaveReminder(false),
+                                3000
+                              );
+                            }
+                          }}
+                        >
+                          刪除這個圖片
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+            {showSaveReminder && (
+              <div className="text-yellow-600 text-sm mt-2">
+                圖片已從列表中移除，請記得儲存變更
+              </div>
+            )}
+            <MultipleImageUpload
+              onImagesChange={(images) => {
+                const imagesData = images.map((img) => ({
+                  id: img.id,
+                  url: img.url,
+                }));
+                setValue("images", imagesData);
+              }}
+              inputId="work-images-upload"
+            />
           </div>
         </div>
       </div>

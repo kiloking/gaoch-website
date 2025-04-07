@@ -19,7 +19,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center font-bold text-xl">
-                後台管理系統
+                高誠後台管理系統
               </div>
             </div>
             <div className="flex items-center">

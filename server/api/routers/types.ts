@@ -13,11 +13,28 @@ export const createWorkSchema = z.object({
   architect: z.string(),
   company: z.string(),
   ytVideoUrl: z.string().optional().default(""),
-  coverImageId: z.number().nullable().optional(),
-  bgimgId: z.number().nullable().optional(),
+  coverImageId: z.number().optional(),
+  bgimgId: z.number().optional(),
+  images: z.array(z.object({ id: z.number() })).optional(),
 });
 
-export type createWorkType = z.infer<typeof createWorkSchema>;
+export type createWorkType = {
+  title: string;
+  year: string;
+  location: string;
+  description: string;
+  ytVideoUrl: string;
+  address: string;
+  area: string;
+  units: string;
+  floors: string;
+  houseTypes: string;
+  architect: string;
+  company: string;
+  bgimgId?: number;
+  coverImageId?: number;
+  images?: { id: number }[];
+};
 
 export const repairSchema = z.object({
   type: z.string(),

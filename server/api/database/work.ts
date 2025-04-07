@@ -8,6 +8,7 @@ export const getAllWorks = async () => {
     include: {
       coverImage: true,
       bgimg: true,
+      images: true,
     },
     orderBy: {
       year: "asc",
@@ -21,15 +22,25 @@ export const getAllWorks = async () => {
 
 export const createWork = async (data: createWorkType) => {
   try {
+    const { images, ...restData } = data;
     const payload = {
-      ...data,
-      ...(data.coverImageId !== undefined && {
-        coverImageId: data.coverImageId,
+      ...restData,
+      ...(restData.coverImageId !== undefined && {
+        coverImageId: restData.coverImageId,
       }),
-      ...(data.bgimgId !== undefined && { bgimgId: data.bgimgId }),
+      ...(restData.bgimgId !== undefined && { bgimgId: restData.bgimgId }),
     };
+
     return await db.work.create({
-      data: payload,
+      data: {
+        ...payload,
+        ...(images &&
+          images.length > 0 && {
+            images: {
+              connect: images.map((img) => ({ id: img.id })),
+            },
+          }),
+      },
     });
   } catch (error) {
     console.error(error);
@@ -39,19 +50,30 @@ export const createWork = async (data: createWorkType) => {
 //update work
 export const updateWork = async (id: number, data: createWorkType) => {
   try {
+    const { images, ...restData } = data;
     const payload = {
-      ...data,
-      ...(data.coverImageId !== undefined && {
-        coverImageId: data.coverImageId,
+      ...restData,
+      ...(restData.coverImageId !== undefined && {
+        coverImageId: restData.coverImageId,
       }),
-      ...(data.bgimgId !== undefined && { bgimgId: data.bgimgId }),
+      ...(restData.bgimgId !== undefined && { bgimgId: restData.bgimgId }),
     };
+
     return await db.work.update({
       where: { id },
-      data: payload,
+      data: {
+        ...payload,
+        ...(images && {
+          images: {
+            set: [],
+            connect: images.map((img) => ({ id: img.id })),
+          },
+        }),
+      },
       include: {
         coverImage: true,
         bgimg: true,
+        images: true,
       },
     });
   } catch (error) {

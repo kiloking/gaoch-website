@@ -15,6 +15,7 @@ export type WorkFormData = {
   ytVideoUrl: string;
   coverImage: ImageType | null;
   bgimg: ImageType | null;
+  images: ImageType[];
 };
 
 //projectFormDataType
@@ -102,4 +103,9 @@ export type RepairListType = {
     createdAt: Date;
     updatedAt: Date;
   }[];
+};
+
+export type UploadedImageType = {
+  id: number;
+  url: string;
 };

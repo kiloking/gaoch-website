@@ -156,7 +156,7 @@ export function ProjectsList() {
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col items-start">
           <h1 className="text-2xl font-bold">新案管理</h1>
-          <p className="text-sm text-gray-500">新建案</p>
+          <p className="text-sm text-gray-500">新案鑑賞</p>
         </div>
         <button
           onClick={() => setShowAddForm(true)}
@@ -173,10 +173,13 @@ export function ProjectsList() {
                 編號
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                銷售狀態
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 標題
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                連結
+                網站超連結
               </th>
 
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -188,6 +191,9 @@ export function ProjectsList() {
             {projects?.map((project) => (
               <tr key={project.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">{project.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {project.status}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">{project.title}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{project.link}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

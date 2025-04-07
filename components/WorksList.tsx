@@ -49,8 +49,9 @@ export function WorksList() {
 
     const createData = {
       ...data,
-      bgimgId: data.bgimgId ? data.bgimgId : null,
-      coverImageId: data.coverImageId ? data.coverImageId : null,
+      bgimgId: data.bgimgId || undefined,
+      coverImageId: data.coverImageId || undefined,
+      images: data.images || [],
     };
     createWork({ data: createData });
 
@@ -64,8 +65,8 @@ export function WorksList() {
     if (!selectedWorkId) return;
     const updateData = {
       ...data,
-      bgimgId: data.bgimgId ? data.bgimgId : null,
-      coverImageId: data.coverImageId ? data.coverImageId : null,
+      bgimgId: data.bgimgId || undefined,
+      coverImageId: data.coverImageId || undefined,
     };
 
     console.log("Updating with data:", updateData); // 調試用
