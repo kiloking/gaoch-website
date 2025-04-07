@@ -23,9 +23,9 @@ export default function RepairDetail() {
 
   return (
     <div className="w-11/12 mx-auto p-4 flex justify-center">
-      <div className=" min-h-[297mm] bg-white   my-8">
+      <div className=" min-h-[297mm] bg-white   my-4">
         {/* 標題和編號 */}
-        <div className="text-center mb-8 flex justify-center items-center gap-4">
+        <div className="text-center mb-4 flex justify-center items-center gap-4">
           <h1 className="text-2xl font-bold">維修申請單</h1>
           <div className="print:hidden mt-0 text-center">
             <button
@@ -97,7 +97,7 @@ export default function RepairDetail() {
           {/* 維修內容 */}
           <div className="p-2">
             <div className=" mb-2">維修內容：</div>
-            <div className="min-h-[100px] whitespace-pre-wrap">
+            <div className="min-h-[60px] whitespace-pre-wrap">
               {repair.content}
             </div>
             {repair.images.map((image) => (
@@ -105,8 +105,8 @@ export default function RepairDetail() {
                 key={image.id}
                 src={image.url}
                 alt="維修圖片"
-                width={300}
-                height={300}
+                width={200}
+                height={200}
               />
             ))}
           </div>
@@ -115,9 +115,9 @@ export default function RepairDetail() {
           <div className="grid grid-cols-2 border-t border-black">
             <div className="p-4 border-r border-black">
               <div>修繕人員：</div>
-              <div className="h-10"></div>
+              <div className="min-h-[1px]"></div>
             </div>
-            <div className="p-4 flex flex-col justify-between">
+            <div className="p-4 flex  justify-between">
               <div className="">受理人員：</div>
               <div>受理日：＿＿年＿＿月＿＿日</div>
             </div>
@@ -153,7 +153,7 @@ export default function RepairDetail() {
             </div>
 
             {/* 表格主體 - 6行 */}
-            {[...Array(2)].map((_, index) => (
+            {[...Array(1)].map((_, index) => (
               <React.Fragment key={index}>
                 <div className="col-span-5 p-2 border-b border-r border-black min-h-[40px]"></div>
                 <div className="col-span-1 p-2 border-b border-r border-black"></div>
@@ -193,7 +193,7 @@ export default function RepairDetail() {
         </div>
 
         {/* 維修驗收表 */}
-        <div className="mt-8 border border-black">
+        <div className="mt-4 border border-black">
           <div className="text-center p-2 font-bold border-b border-black">
             維修驗收表
           </div>
@@ -206,7 +206,7 @@ export default function RepairDetail() {
           {/* 維修情形及結果 */}
           <div className="p-4 border-b border-black">
             <div>2. 維修情形及結果：</div>
-            <div className="min-h-[50px]"></div>
+            <div className="min-h-[1px]"></div>
           </div>
 
           {/* 簽核表格 */}
@@ -231,10 +231,10 @@ export default function RepairDetail() {
                 </div>
               </div>
               <div className="grid grid-cols-4 ">
-                <div className="p-9 border-r border-black "></div>
-                <div className="p-8 border-r border-black"></div>
-                <div className="p-8 border-r border-black"></div>
-                <div className="p-8"></div>
+                <div className="p-4 border-r border-black "></div>
+                <div className="p-4 border-r border-black"></div>
+                <div className="p-4 border-r border-black"></div>
+                <div className="p-4"></div>
               </div>
             </div>
 
@@ -252,10 +252,10 @@ export default function RepairDetail() {
                 </div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="p-9 border-r border-black">
+                <div className="p-4 border-r border-black">
                   {/* <div className="text-sm">客戶簽字：</div> */}
                 </div>
-                <div className="p-6"></div>
+                <div className="p-4"></div>
               </div>
             </div>
           </div>
