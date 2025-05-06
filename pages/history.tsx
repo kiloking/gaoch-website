@@ -76,7 +76,7 @@ export default function History() {
                 initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="   w-full h-[calc(100vh-100px)]"
+                className="   w-full  md:h-[calc(100vh-100px)] h-[calc(50vh-100px)]"
               >
                 <img
                   src="https://web.forestdev.work/gaoch/bg/02.png"

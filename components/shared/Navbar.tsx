@@ -50,7 +50,12 @@ const Navbar = () => {
                 priority={false}
               />
             </Link>
-            <div onClick={toggleMenu} className="focus:outline-none">
+            <div
+              onClick={toggleMenu}
+              className={`focus:outline-none ${
+                type === "home" ? "text-white" : "text-black"
+              }`}
+            >
               <FaBars />
             </div>
           </div>

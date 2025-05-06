@@ -15,7 +15,7 @@ export default function Home() {
         >
           <section className="flex flex-col w-full relative h-full items-center justify-center  py-[5%]">
             <div
-              className=" relative items-center justify-center  text-[100px] font-bold"
+              className=" relative items-center justify-center  md:text-[100px] text-[45px] font-bold"
               style={{
                 background:
                   "linear-gradient(to top right, #FFFFFF80 0%, #858585 100%)",
@@ -26,7 +26,7 @@ export default function Home() {
             >
               務實 專業 用心
             </div>
-            <div className="text-white/70 text-lg font-bold w-[70%] mx-auto text-center">
+            <div className="text-white/70 text-lg font-bold md:w-[70%] w-[90%] mx-auto text-center">
               深耕房地產相關行業多年，除了累積豐厚經驗與建實力，憑藉著務實的態度與在地政策的了解，{" "}
               <br />
               <span className="text-amber-400 ">「高誠事業」</span>
