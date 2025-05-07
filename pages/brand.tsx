@@ -19,7 +19,7 @@ export default function Brand() {
         >
           {/* black 遮罩 */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
-          <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
+          <div className="text-white md:text-5xl text-4xl font-bold  z-20 absolute bottom-10 md:left-10 left-5">
             Our Brand <span className="text-white text-xl"> / 企業精神</span>
           </div>
         </motion.div>
@@ -51,7 +51,7 @@ export default function Brand() {
                   initial={{ opacity: 0, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="absolute top-[45%] left-[0%] text-4xl font-black font-noto text-zinc-50 bg-[#e2d0aa00] px-4 py-0 tracking-widest"
+                  className="absolute md:top-[45%] top-[80%] left-[0%] md:text-4xl text-2xl font-black font-noto text-zinc-50 bg-[#e2d0aa00] px-4 py-0 tracking-widest"
                 >
                   “ 職人堅持 以誠築家 ”
                 </motion.div>
@@ -63,7 +63,7 @@ export default function Brand() {
             <motion.div className="w-[100%]  mx-auto    bg-white  ">
               <div className="py-[3%] px-[4%]">
                 <div className="pt- flex flex-col gap-2 items-center">
-                  <div className="text-[#04C798] text-4xl font-bold mb-2 font-noto">
+                  <div className="text-[#04C798] md:text-4xl text-3xl font-bold mb-2 font-noto">
                     眼光獨到 - 務實建築人
                   </div>
 

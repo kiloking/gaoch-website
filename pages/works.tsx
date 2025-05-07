@@ -22,7 +22,7 @@ export default function Works() {
         >
           {/* black 遮罩 */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-10" />
-          <div className="text-white text-5xl font-bold  z-20 absolute bottom-10 left-10">
+          <div className="text-white md:text-5xl text-4xl font-bold  z-20 absolute bottom-10 md:left-10 left-5">
             Works <span className="text-white text-xl"> / 精彩力作</span>
           </div>
         </motion.div>
