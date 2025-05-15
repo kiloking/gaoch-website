@@ -12,6 +12,10 @@ export default function Document() {
         <meta name="description" content="高誠實業有限公司" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
+          name="google-site-verification"
+          content="85Z2bRxsVAZSOx3OwmJTdpCTuTAZvmbY_j1BEdd7jcM"
+        />
+        <meta
           name="keywords"
           content="高、高誠、高誠事業、高誠開發、高華建設、高誠營造"
         />
