@@ -43,7 +43,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center p-4  text-black">
             <Link href="/" className="text-xl font-bold">
               <Image
-                src="https://web.forestdev.work/gaoch/logo02.svg"
+                src="https://web.forestdev.work/gaoch/logo03.svg"
                 alt="logo"
                 width={280}
                 height={24}
@@ -101,12 +101,12 @@ const Navbar = () => {
       ) : (
         <div className="z-20 absolute top-0  bg-black/0 w-full flex items-center justify-between   px-12 pt-10 pb-6 space-x-10 group/navbarC">
           {type === "home" && (
-            <div className="w-full h-full absolute top-0 left-0 bg-gradient-to-b via-black/30 from-black/50 transition-all opacity-0 group-hover/navbarC:opacity-100 -z-10 pointer-events-none"></div>
+            <div className="w-full h-full absolute top-0 left-0 bg-gradient-to-b via-black/20 from-black/50 transition-all opacity-0 group-hover/navbarC:opacity-100 -z-10 pointer-events-none"></div>
           )}
           <Link href="/" className="w-full">
             {type === "home" ? (
               <Image
-                src="https://web.forestdev.work/gaoch/logo02.svg"
+                src="https://web.forestdev.work/gaoch/logo03.svg"
                 alt="image"
                 width={400}
                 height={24}
@@ -114,7 +114,7 @@ const Navbar = () => {
               />
             ) : (
               <Image
-                src="https://web.forestdev.work/gaoch/logo02.svg"
+                src="https://web.forestdev.work/gaoch/logo03.svg"
                 alt="image"
                 width={400}
                 height={24}

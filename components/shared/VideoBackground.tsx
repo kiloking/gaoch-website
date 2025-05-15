@@ -42,7 +42,7 @@ export default function VideoBackground({ videoId }: VideoBackgroundProps) {
     <>
       <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
         {/* 調整漸層遮罩的透明度 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-transparent z-10" />
 
         {/* YouTube iframe */}
         <div className="relative w-full h-full">

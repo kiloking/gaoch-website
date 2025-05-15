@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="text-black/50 text-[1vw] text-right pb-8 w-12/12 mx-auto flex flex-col items-center gap-5 pt-14  bg-zinc-200 ">
         <div className="w-[70%] md:w-[20%]">
           <Image
-            src="https://web.forestdev.work/gaoch/logo02.svg"
+            src="https://web.forestdev.work/gaoch/logo03.svg"
             alt="logo"
             width={400}
             height={24}
@@ -61,7 +61,7 @@ const Footer = () => {
             <FaMapMarkerAlt size={10} />
             325桃園市龍潭區工二路一段96巷11號
           </div>
-          <div>copyright, 2025 All Right Reserved.</div>
+          <div>copyright 2025 All Right Reserved.</div>
         </div>
       </div>
     </>
