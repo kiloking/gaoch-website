@@ -78,12 +78,20 @@ const Navbar = () => {
                 onClick={handleClose}
               />
               <div
-                className={`fixed top-0 left-0 w-[85%] h-full bg-gradient-to-b from-white to-gray-50 shadow-2xl ${
+                className={`fixed top-0 left-0 w-[100%] h-full bg-[#f0edeb] shadow-2xl ${
                   isClosing ? "animate-slideOut" : "animate-slideIn"
                 }`}
               >
-                <div className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4">
-                  <h2 className="text-xl font-semibold text-gray-800">選單</h2>
+                <div className="h-16  border-b border-gray-100 flex items-center justify-between px-4">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    <Image
+                      src="https://web.forestdev.work/gaoch/logo03.svg"
+                      alt="logo"
+                      width={280}
+                      height={24}
+                      priority={false}
+                    />
+                  </h2>
                   <div
                     onClick={handleClose}
                     className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 active:bg-gray-200"
@@ -93,24 +101,26 @@ const Navbar = () => {
                 </div>
 
                 <div className="p-4">
-                  <ul className="space-y-1">
+                  <ul className="space-y-1 divide-y divide-gray-300">
                     {frontNavLinks.map((item, index) => (
                       <li key={`mobile-nav-${index}`}>
                         <Link
                           href={item.route}
-                          className={`flex items-center px-4 py-3 rounded-xl hover:bg-white/80 active:bg-gray-100 gap-2 text-gray-800 font-bold`}
+                          className={`flex flex-col items-center justify-center  px-4 py-3  active:bg-gray-100 gap-2 text-amber-900 font-bold ${
+                            index === 0 && "border-b border-gray-300"
+                          }`}
                           onClick={handleClose}
                         >
                           <span>{item.label}</span>
                           {item.sub && <ChevronDown size={16} />}
                         </Link>
                         {item.sub && (
-                          <ul className="mt-1 ml-4 space-y-1">
+                          <ul className="mt-1  space-y-1  divide-y divide-gray-300">
                             {item.sub.map((subitem, subindex) => (
                               <li key={`mobile-subnav-${subindex}`}>
                                 <Link
                                   href={subitem.route}
-                                  className={`flex items-center px-4 py-2.5 rounded-lg hover:bg-white/80 active:bg-gray-100 text-gray-600 `}
+                                  className={`flex items-center justify-center  px-4 py-2.5 text-amber-800/80 `}
                                   onClick={handleClose}
                                 >
                                   <span className="text-md">

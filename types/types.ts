@@ -109,3 +109,23 @@ export type UploadedImageType = {
   id: number;
   url: string;
 };
+
+export type UserFormData = {
+  id: string;
+  username: string;
+  role: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type UserCreateInput = {
+  username: string;
+  password: string;
+  role?: string;
+  isActive?: boolean;
+};
+
+export type UserUpdateInput = Partial<Omit<UserCreateInput, "password">> & {
+  password?: string;
+};

@@ -1,22 +1,38 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const username = formData.get("username");
-    const password = formData.get("password");
+    setIsLoading(true);
+    setError("");
 
-    if (username === "admin" && password === "admin") {
-      // 設置登入狀態
-      localStorage.setItem("isLoggedIn", "true");
-      router.push("/dashboard");
-    } else {
-      setError("帳號或密碼錯誤");
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const result = await signIn("credentials", {
+        username,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+      setError("登入時發生錯誤");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -55,9 +71,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+            disabled={isLoading}
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400"
           >
-            登入
+            {isLoading ? "登入中..." : "登入"}
           </button>
         </form>
       </div>
