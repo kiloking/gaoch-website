@@ -5,6 +5,9 @@ import Link from "next/link";
 import { frontNavLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { FaBars } from "react-icons/fa";
+import { ChevronDown, Dot, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 const Navbar = () => {
   const pathname = usePathname();
   const worksPattern = /^\/works\/w\d+$/;
@@ -19,6 +22,8 @@ const Navbar = () => {
     setMenuOpen(!menuOpen);
   };
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
+  const [isClosing, setIsClosing] = useState(false);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
@@ -36,6 +41,15 @@ const Navbar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      toggleMenu();
+    }, 300); // 與動畫時長相同
+  };
+
   return (
     <>
       {isMobile ? (
@@ -59,43 +73,68 @@ const Navbar = () => {
               <FaBars />
             </div>
           </div>
-          {menuOpen && (
-            <div className="absolute top-0 left-0 w-full bg-white text-black p-4 text-2xl">
-              <div onClick={toggleMenu} className=" p-4 absolute top-0 right-0">
-                <FaBars />
+          {(menuOpen || isClosing) && (
+            <>
+              <div
+                className={`fixed inset-0 bg-black/20`}
+                onClick={handleClose}
+              />
+              <div
+                className={`fixed top-0 left-0 w-[85%] h-full bg-gradient-to-b from-white to-gray-50 shadow-2xl ${
+                  isClosing ? "animate-slideOut" : "animate-slideIn"
+                }`}
+              >
+                <div className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4">
+                  <h2 className="text-xl font-semibold text-gray-800">選單</h2>
+                  <div
+                    onClick={handleClose}
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 active:bg-gray-200"
+                  >
+                    <X className="text-xl text-gray-600" />
+                  </div>
+                </div>
+
+                <div className="p-4">
+                  <ul className="space-y-1">
+                    {frontNavLinks.map((item, index) => (
+                      <li key={`mobile-nav-${index}`}>
+                        <Link
+                          href={item.route}
+                          className={`flex items-center px-4 py-3 rounded-xl hover:bg-white/80 active:bg-gray-100 gap-2 text-gray-800 font-bold`}
+                          onClick={handleClose}
+                        >
+                          <span>{item.label}</span>
+                          {item.sub && <ChevronDown size={16} />}
+                        </Link>
+                        {item.sub && (
+                          <ul className="mt-1 ml-4 space-y-1">
+                            {item.sub.map((subitem, subindex) => (
+                              <li key={`mobile-subnav-${subindex}`}>
+                                <Link
+                                  href={subitem.route}
+                                  className={`flex items-center px-4 py-2.5 rounded-lg hover:bg-white/80 active:bg-gray-100 text-gray-600 `}
+                                  onClick={handleClose}
+                                >
+                                  <span className="text-md">
+                                    {subitem.label}
+                                  </span>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100">
+                  <div className="text-sm text-gray-500 text-center">
+                    © 2025 高誠事業
+                  </div>
+                </div>
               </div>
-              <ul className="mt-3 space-y-2">
-                {frontNavLinks.map((item, index) => (
-                  <li key={`mobile-nav-${index}`} className="py-2">
-                    <Link
-                      href={item.route}
-                      className="block"
-                      onClick={toggleMenu}
-                    >
-                      {item.label}
-                    </Link>
-                    {item.sub && (
-                      <ul className="pl-4 mt-3 space-y-2">
-                        {item.sub.map((subitem, subindex) => (
-                          <li
-                            key={`mobile-subnav-${subindex}`}
-                            className="py-1"
-                          >
-                            <Link
-                              href={subitem.route}
-                              className="block"
-                              onClick={toggleMenu}
-                            >
-                              {subitem.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </>
           )}
         </div>
       ) : (
