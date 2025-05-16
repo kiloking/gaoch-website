@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import * as jose from "jose";
+import bcrypt from "bcryptjs";
 
 export const usersRouter = createTRPCRouter({
   // 更新用戶啟用狀態
@@ -55,17 +55,12 @@ export const usersRouter = createTRPCRouter({
         throw new Error("沒有權限執行此操作");
       }
 
-      // 使用 jose 加密密碼
-      const encodedPassword = await new jose.EncryptJWT({
-        password: input.password,
-      })
-        .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
-        .encrypt(new TextEncoder().encode(process.env.JWT_SECRET!));
+      const hashedPassword = await bcrypt.hash(input.password, 10);
 
       return await ctx.prisma.user.create({
         data: {
           username: input.username,
-          password: encodedPassword,
+          password: hashedPassword,
           role: input.role,
           isActive: true,
         },

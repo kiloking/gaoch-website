@@ -1,6 +1,6 @@
 import { WORKS } from "../constants/works";
 import { PrismaClient } from "@prisma/client";
-import * as jose from "jose";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -15,9 +15,7 @@ async function main() {
   // });
 
   // 創建管理員帳號
-  const adminPassword = await new jose.EncryptJWT({ password: "admin123" })
-    .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
-    .encrypt(new TextEncoder().encode(process.env.JWT_SECRET!));
+  const adminPassword = await bcrypt.hash("admin123", 10);
   await prisma.user.upsert({
     where: { username: "admin" },
     update: {},
@@ -29,9 +27,7 @@ async function main() {
   });
 
   // 創建第二個帳號
-  const userPassword = await new jose.EncryptJWT({ password: "user123" })
-    .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
-    .encrypt(new TextEncoder().encode(process.env.JWT_SECRET!));
+  const userPassword = await bcrypt.hash("user123", 10);
   await prisma.user.upsert({
     where: { username: "user" },
     update: {},
