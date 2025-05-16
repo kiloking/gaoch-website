@@ -24,20 +24,28 @@ export const authOptions: AuthOptions = {
           throw new Error("帳號或密碼錯誤");
         }
 
-        const isValid = await jose.compactVerify(
-          user.password,
-          new TextEncoder().encode(credentials.password)
-        );
+        try {
+          // 解密存儲的密碼
+          const { payload } = await jose.jwtDecrypt(
+            user.password,
+            new TextEncoder().encode(process.env.JWT_SECRET!)
+          );
 
-        if (!isValid) {
+          // 比較密碼
+          const isValid = payload.password === credentials.password;
+
+          if (!isValid) {
+            throw new Error("帳號或密碼錯誤");
+          }
+
+          return {
+            id: user.id,
+            name: user.username,
+            role: user.role,
+          };
+        } catch (error) {
           throw new Error("帳號或密碼錯誤");
         }
-
-        return {
-          id: user.id,
-          name: user.username,
-          role: user.role,
-        };
       },
     }),
   ],
