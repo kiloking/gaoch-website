@@ -9,7 +9,10 @@ export default function Document() {
           rel="stylesheet"
         />
         <title>高誠實業有限公司</title>
-        <meta name="description" content="高誠實業有限公司" />
+        <meta
+          name="description"
+          content="高、高誠、高誠事業、高誠開發、高華建設、高誠營造"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="google-site-verification"
