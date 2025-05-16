@@ -5,8 +5,7 @@ import Link from "next/link";
 import { frontNavLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { FaBars } from "react-icons/fa";
-import { ChevronDown, Dot, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronDown, X } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -22,7 +21,6 @@ const Navbar = () => {
     setMenuOpen(!menuOpen);
   };
   const [isMobile, setIsMobile] = useState(false);
-  const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
 
   const handleResize = () => {
