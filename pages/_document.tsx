@@ -14,6 +14,10 @@ export default function Document() {
           name="keywords"
           content="高、高誠、高誠事業、高誠開發、高華建設、高誠營造"
         />
+        <meta
+          property="og:image"
+          content="https://web.forestdev.work/gaoch/web01.jpg"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="https://web.forestdev.work/gaoch/favicon.ico" />
         <meta
