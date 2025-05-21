@@ -15,6 +15,7 @@ export default function Document() {
           content="高、高誠、高誠事業、高誠開發、高華建設、高誠營造"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="https://web.forestdev.work/gaoch/favicon.ico" />
         <meta
           name="google-site-verification"
           content="85Z2bRxsVAZSOx3OwmJTdpCTuTAZvmbY_j1BEdd7jcM"
