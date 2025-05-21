@@ -8,7 +8,7 @@ export async function getServerSideProps({ res }) {
     Allow: /
     Disallow: /private/
     
-    Sitemap: https://your-domain.com/sitemap.xml
+    Sitemap: https://www.gaoch.com.tw/sitemap.xml
   `;
 
   res.setHeader("Content-Type", "text/plain");
