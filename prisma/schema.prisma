@@ -32,7 +32,7 @@ model Repair {
 
   community_code String // 社區代碼
   community_name String // 社區名稱
-  email String // 電子郵件
+  email String? // 電子郵件
   contact_time String  //聯絡時間
   repair_area String //修繕區域
   repair_class String //修繕類別

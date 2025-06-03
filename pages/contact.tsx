@@ -46,8 +46,11 @@ export default function Contact() {
 
   const { mutate: createRepair, isLoading } = api.repair.create.useMutation({
     onSuccess: () => {
-      toast.success("報修單已傳送，我們會盡快處理您的維修需求", {
+      toast.success("報修單已傳送，我們會盡快處理您的維修需求。", {
         position: "top-center",
+        classNames: {
+          title: "text-red-400 text-lg",
+        },
       });
       setFormData({
         unit: "",
@@ -74,8 +77,11 @@ export default function Contact() {
       setIsVerified(false);
     },
     onError: () => {
-      toast("提交失敗，請稍後再試", {
+      toast("提交失敗，請稍後再試。", {
         position: "top-center",
+        classNames: {
+          title: "text-red-400 text-lg",
+        },
       });
     },
   });
@@ -94,8 +100,13 @@ export default function Contact() {
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(formData.email)) {
-      toast("請輸入有效的電子郵件地址", { position: "top-center" });
+    if (formData.email && !emailRegex.test(formData.email)) {
+      toast("請輸入有效的電子郵件地址。", {
+        position: "top-center",
+        classNames: {
+          title: "text-red-400 text-lg",
+        },
+      });
       return false;
     }
 
@@ -159,8 +170,11 @@ Email：${formData.email}
     }
 
     if (!isVerified) {
-      toast("請完成人機驗證", {
+      toast("請完成人機驗證。", {
         position: "top-center",
+        classNames: {
+          title: "text-red-400 text-lg",
+        },
       });
       return;
     }
@@ -214,8 +228,11 @@ Email：${formData.email}
 
   const handleImagesChange = (url: string, imageId?: number) => {
     if (uploadedImages.length >= 2) {
-      toast("最多只能上傳2張圖片", {
+      toast("最多只能上傳2張圖片。", {
         position: "top-center",
+        classNames: {
+          title: "text-red-400 text-lg",
+        },
       });
       return;
     }
@@ -472,11 +489,10 @@ Email：${formData.email}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email *
+                      Email (非必填)
                     </label>
                     <input
                       type="email"
-                      required
                       placeholder="e.g. 123@abc.com"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                       value={formData.email}

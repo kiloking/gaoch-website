@@ -14,7 +14,7 @@ const repairSchema = z.object({
   status: z.string(),
   community_code: z.string(),
   community_name: z.string(),
-  email: z.string().email("請填寫正確的 Email 格式"),
+  email: z.string().optional().nullable(),
   contact_time: z.string(),
   repair_area: z.string(),
   repair_class: z.string(),
