@@ -92,7 +92,7 @@ export type RepairListType = {
   updatedAt: Date;
   community_code: string;
   community_name: string;
-  email: string;
+  email: string | null;
   contact_time: string;
   repair_area: string;
   repair_class: string;
