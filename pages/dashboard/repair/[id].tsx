@@ -22,10 +22,10 @@ export default function RepairDetail() {
   if (!repair) return <div>找不到此維修單</div>;
 
   return (
-    <div className="w-11/12 mx-auto p-4 flex justify-center">
+    <div className="w-11/12 mx-auto p-4 flex justify-center ">
       <div className=" min-h-[297mm] bg-white   my-4">
         {/* 標題和編號 */}
-        <div className="text-center mb-4 flex justify-center items-center gap-4">
+        <div className="text-center mb-4 flex justify-center items-center gap-4 relative">
           <h1 className="text-2xl font-bold">維修申請單</h1>
           <div className="print:hidden mt-0 text-center">
             <button
@@ -35,57 +35,57 @@ export default function RepairDetail() {
               列印維修單
             </button>
           </div>
-        </div>
-
-        {/* 基本資訊表格 */}
-        <div className="flex gap-4 justify-between">
-          <div className=" border-t border-r border-l border-black p-2">
-            <span>編號：{repair.serial_no}</span>
+          <div className="flex gap-4 justify-between absolute top-0 right-0">
+            <div className="  border border-black p-2">
+              <span>編號：{repair.serial_no}</span>
+            </div>
           </div>
         </div>
 
+        {/* 基本資訊表格 */}
+
         <div className="border border-black">
           <div className="grid grid-cols-12 border-b border-black">
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>填單日</div>
               <div>{repair.date}</div>
             </div>
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>聯絡人</div>
               <div>{repair.contactName}</div>
             </div>
-            <div className="col-span-4 p-2 ">
+            <div className="col-span-4 p-2 flex justify-start items-center gap-2">
               <div>社區</div>
               <div>{repair.community_name}</div>
             </div>
           </div>
           <div className="grid grid-cols-12 border-b border-black">
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>方便聯絡時間</div>
               <div>{repair.contact_time}</div>
             </div>
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>Email</div>
               <div>{repair.email}</div>
             </div>
-            <div className="col-span-4 p-2 ">
+            <div className="col-span-4 p-2 flex justify-start items-center gap-2">
               <div>聯絡電話</div>
               <div>{repair.phone}</div>
             </div>
           </div>
 
           <div className="grid grid-cols-12 border-b border-black">
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>戶別</div>
               <div>{repair.unit}</div>
             </div>
-            <div className="col-span-4 p-2 border-r border-black">
+            <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
               <div>區域 / 類型</div>
               <div>
                 {repair.repair_area} / {repair.repair_class}
               </div>
             </div>
-            <div className="col-span-4 p-2 ">
+            <div className="col-span-4 p-2 flex justify-start items-center gap-2">
               <div>附件</div>
               <div>
                 圖片 {repair.images.length} 件 / 影片{" "}
@@ -96,19 +96,21 @@ export default function RepairDetail() {
 
           {/* 維修內容 */}
           <div className="p-2">
-            <div className=" mb-2">維修內容：</div>
-            <div className="min-h-[60px] whitespace-pre-wrap">
-              {repair.content}
+            <div className="flex justify-start items-center gap-2 mb-4">
+              <div className=" ">維修內容：</div>
+              <div className="whitespace-pre-wrap">{repair.content}</div>
             </div>
-            {repair.images.map((image) => (
-              <Image
-                key={image.id}
-                src={image.url}
-                alt="維修圖片"
-                width={200}
-                height={200}
-              />
-            ))}
+
+            <div className="flex flex-wrap gap-2 min-h-[50px] ">
+              {repair.images.map((image) => (
+                <img
+                  key={image.id}
+                  src={image.url}
+                  alt="維修圖片"
+                  className="max-w-[100px] max-h-[180px] object-contain"
+                />
+              ))}
+            </div>
           </div>
 
           {/* 簽名欄 */}
@@ -133,10 +135,10 @@ export default function RepairDetail() {
           {/* 表格內容 */}
           <div className="grid grid-cols-12 text-sm">
             {/* 表頭 */}
-            <div className="col-span-5 p-2 border-b border-r border-black">
+            <div className="col-span-3 p-2 border-b border-r border-black">
               現場會勘結果
             </div>
-            <div className="col-span-1 p-2 border-b border-r border-black">
+            <div className="col-span-3 p-2 border-b border-r border-black">
               責任歸屬級數
             </div>
             <div className="col-span-2 p-2 border-b border-r border-black">
@@ -155,8 +157,8 @@ export default function RepairDetail() {
             {/* 表格主體 - 6行 */}
             {[...Array(1)].map((_, index) => (
               <React.Fragment key={index}>
-                <div className="col-span-5 p-2 border-b border-r border-black min-h-[40px]"></div>
-                <div className="col-span-1 p-2 border-b border-r border-black"></div>
+                <div className="col-span-3 p-2 border-b border-r border-black min-h-[40px]"></div>
+                <div className="col-span-3 p-2 border-b border-r border-black"></div>
                 <div className="col-span-2 p-2 border-b border-r border-black"></div>
                 <div className="col-span-2 p-2 border-b border-r border-black">
                   <div className="flex justify-center gap-5">
