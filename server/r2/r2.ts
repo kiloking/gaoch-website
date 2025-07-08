@@ -85,7 +85,7 @@ export async function uploadImage({
   }
 
   const command = new PutObjectCommand({
-    Bucket: process.env.AWS_BUCKET_NAME,
+    Bucket: BUCKET_NAME,
     Key: filename,
     Body: buffer,
   });
@@ -106,7 +106,7 @@ export async function uploadImage({
 
 export async function getFile(key: string) {
   const command = new GetObjectCommand({
-    Bucket: process.env.AWS_BUCKET_NAME,
+    Bucket: BUCKET_NAME,
     Key: key,
   });
 
@@ -139,7 +139,7 @@ export async function deleteMultipleImages(urls: string[]) {
   for (let i = 0; i < Keys.length; i += 1000) {
     commands.push(
       new DeleteObjectsCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: BUCKET_NAME,
         Delete: {
           Objects: Keys.slice(i, i + 1000).map((Key) => ({ Key })),
         },

@@ -43,26 +43,6 @@ export function ImageUploadButton({
   const getSignedUrl = api.upload.getSignedUrl.useMutation();
   const createImage = api.upload.createImage.useMutation();
 
-  // 測試網路連線
-  const testNetworkConnection = async () => {
-    try {
-      const response = await fetch("/api/trpc/upload.getSignedUrl", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: "test",
-          size: 1024,
-        }),
-      });
-      return response.ok;
-    } catch (error) {
-      console.error("Network test failed:", error);
-      return false;
-    }
-  };
-
   const compressImage = async (file: File): Promise<File> => {
     const options = {
       maxSizeMB: 1.5, // 最大檔案大小
@@ -105,12 +85,6 @@ export function ImageUploadButton({
     setErrorMessage(""); // Clear previous errors
 
     try {
-      // 先測試網路連線
-      const networkOk = await testNetworkConnection();
-      if (!networkOk) {
-        throw new Error("網路連線異常，請檢查網路設定");
-      }
-
       const file = files[0];
       console.log("File info:", {
         name: file.name,
@@ -150,12 +124,12 @@ export function ImageUploadButton({
       // 獲取預簽名 URL
       console.log("Getting signed URL for:", imageName, "size:", size);
       const signedUrl = await getSignedUrl.mutateAsync({
-        key: "web/goach/upload/" + imageName,
+        key: "goach/upload/" + imageName,
         size,
       });
 
       if (!signedUrl) {
-        throw new Error("Failed to get signed URL");
+        throw new Error("無法獲取上傳連結，請檢查網路連線");
       }
       console.log("signedUrl", signedUrl);
 
@@ -172,14 +146,14 @@ export function ImageUploadButton({
       if (!uploadResponse.ok) {
         const errorText = await uploadResponse.text();
         console.error("Upload failed:", uploadResponse.status, errorText);
-        throw new Error(`Upload failed: ${uploadResponse.status} ${errorText}`);
+        throw new Error(`上傳失敗 (${uploadResponse.status}): ${errorText}`);
       }
 
       console.log("Upload successful, creating image record...");
 
       // 創建圖片記錄
       const createPayload = {
-        url: "https://web.forestdev.work/web/goach/upload/" + imageName,
+        url: "https://web.forestdev.work/goach/upload/" + imageName,
         name: imageName,
       };
       const imageResult = await createImage.mutateAsync(createPayload);
@@ -191,10 +165,28 @@ export function ImageUploadButton({
       }
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error(
-        `圖片上傳失敗: ${error instanceof Error ? error.message : "未知錯誤"}`
-      );
-      setErrorMessage(error instanceof Error ? error.message : "未知錯誤");
+
+      // 根據錯誤類型提供更具體的錯誤信息
+      let errorMsg = "未知錯誤";
+      if (error instanceof Error) {
+        if (error.message.includes("Failed to fetch")) {
+          errorMsg = "網路連線失敗，請檢查網路設定";
+        } else if (error.message.includes("timeout")) {
+          errorMsg = "上傳超時，請稍後再試";
+        } else if (error.message.includes("413")) {
+          errorMsg = "檔案太大，請選擇較小的圖片";
+        } else if (
+          error.message.includes("401") ||
+          error.message.includes("403")
+        ) {
+          errorMsg = "權限錯誤，請重新整理頁面";
+        } else {
+          errorMsg = error.message;
+        }
+      }
+
+      toast.error(`圖片上傳失敗: ${errorMsg}`);
+      setErrorMessage(errorMsg);
     } finally {
       setIsUploading(false);
     }
