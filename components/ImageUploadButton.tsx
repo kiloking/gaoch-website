@@ -45,7 +45,7 @@ export function ImageUploadButton({
     const options = {
       maxSizeMB: 1.5, // 最大檔案大小
       maxWidthOrHeight: composeSize ? composeSize : 1920, // 最大寬度或高度
-      useWebWorker: true, // 使用 Web Worker 提升性能
+      useWebWorker: false, // 在手機上禁用 Web Worker，避免兼容性問題
       fileType: file.type, // 保持原始檔案類型
     };
 
@@ -83,6 +83,13 @@ export function ImageUploadButton({
 
     try {
       const file = files[0];
+      console.log("File info:", {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+
       const error = validateFile(file);
       if (error) {
         toast.error(error);
@@ -91,9 +98,27 @@ export function ImageUploadButton({
 
       // 壓縮圖片
       const imageName = generateImageName();
-      const compressedFile = await compressImage(file);
+      let compressedFile;
+
+      try {
+        compressedFile = await compressImage(file);
+        console.log("Compression result:", {
+          originalSize: file.size,
+          compressedSize: compressedFile.size,
+          compressionRatio:
+            (((file.size - compressedFile.size) / file.size) * 100).toFixed(2) +
+            "%",
+        });
+      } catch (compressError) {
+        console.error("壓縮失敗，使用原始檔案:", compressError);
+        // 如果壓縮失敗，使用原始檔案
+        compressedFile = file;
+      }
+
       const size = compressedFile.size;
+
       // 獲取預簽名 URL
+      console.log("Getting signed URL for:", imageName, "size:", size);
       const signedUrl = await getSignedUrl.mutateAsync({
         key: "web/goach/upload/" + imageName,
         size,
@@ -105,6 +130,7 @@ export function ImageUploadButton({
       console.log("signedUrl", signedUrl);
 
       // 直接上傳到 R2
+      console.log("Uploading to R2...");
       const uploadResponse = await fetch(signedUrl, {
         method: "PUT",
         body: compressedFile,
@@ -114,8 +140,12 @@ export function ImageUploadButton({
       });
 
       if (!uploadResponse.ok) {
-        throw new Error("Failed to upload to R2");
+        const errorText = await uploadResponse.text();
+        console.error("Upload failed:", uploadResponse.status, errorText);
+        throw new Error(`Upload failed: ${uploadResponse.status} ${errorText}`);
       }
+
+      console.log("Upload successful, creating image record...");
 
       // 創建圖片記錄
       const createPayload = {
@@ -127,10 +157,13 @@ export function ImageUploadButton({
       if (imageResult.url) {
         setUploadedImage(imageResult.url);
         onImagesChange(imageResult.url, imageResult.id);
+        toast.success("圖片上傳成功");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error("圖片上傳失敗");
+      toast.error(
+        `圖片上傳失敗: ${error instanceof Error ? error.message : "未知錯誤"}`
+      );
     } finally {
       setIsUploading(false);
     }
@@ -146,7 +179,7 @@ export function ImageUploadButton({
       <div className="flex items-center gap-4">
         <Input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/jpg"
           onChange={handleFileChange}
           disabled={disabled || isUploading || !!uploadedImage}
           className="hidden"
