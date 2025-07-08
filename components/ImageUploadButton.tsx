@@ -175,7 +175,7 @@ export function ImageUploadButton({
 
       // 創建圖片記錄
       const createPayload = {
-        url: "https://web.forestdev.work/web/goach/upload/" + imageName,
+        url: "https://web.forestdev.work/goach/upload/" + imageName,
         name: imageName,
       };
       const imageResult = await createImage.mutateAsync(createPayload);
