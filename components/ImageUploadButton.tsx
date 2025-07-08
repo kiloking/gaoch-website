@@ -31,15 +31,37 @@ export function ImageUploadButton({
     currentImage || ""
   );
   const [isUploading, setIsUploading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     if (reset) {
       setUploadedImage("");
       onImagesChange("", undefined);
+      setErrorMessage("");
     }
   }, [reset, onImagesChange]);
   const getSignedUrl = api.upload.getSignedUrl.useMutation();
   const createImage = api.upload.createImage.useMutation();
+
+  // 測試網路連線
+  const testNetworkConnection = async () => {
+    try {
+      const response = await fetch("/api/trpc/upload.getSignedUrl", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: "test",
+          size: 1024,
+        }),
+      });
+      return response.ok;
+    } catch (error) {
+      console.error("Network test failed:", error);
+      return false;
+    }
+  };
 
   const compressImage = async (file: File): Promise<File> => {
     const options = {
@@ -80,8 +102,15 @@ export function ImageUploadButton({
     if (!files || files.length === 0) return;
 
     setIsUploading(true);
+    setErrorMessage(""); // Clear previous errors
 
     try {
+      // 先測試網路連線
+      const networkOk = await testNetworkConnection();
+      if (!networkOk) {
+        throw new Error("網路連線異常，請檢查網路設定");
+      }
+
       const file = files[0];
       console.log("File info:", {
         name: file.name,
@@ -93,6 +122,7 @@ export function ImageUploadButton({
       const error = validateFile(file);
       if (error) {
         toast.error(error);
+        setErrorMessage(error);
         return;
       }
 
@@ -162,8 +192,9 @@ export function ImageUploadButton({
     } catch (error) {
       console.error("Upload error:", error);
       toast.error(
-        `圖片上傳失敗: ${error instanceof Error ? error.message : error}`
+        `圖片上傳失敗: ${error instanceof Error ? error.message : "未知錯誤"}`
       );
+      setErrorMessage(error instanceof Error ? error.message : "未知錯誤");
     } finally {
       setIsUploading(false);
     }
@@ -222,6 +253,25 @@ export function ImageUploadButton({
             </Button>
           </CardContent>
         </Card>
+      )}
+
+      {errorMessage && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-2">
+          <div className="text-red-800 text-sm font-medium mb-1">上傳失敗</div>
+          <div className="text-red-600 text-xs">{errorMessage}</div>
+          <div className="text-red-500 text-xs mt-1">
+            請檢查網路連線或稍後再試
+          </div>
+          <button
+            onClick={() => {
+              setErrorMessage("");
+              document.getElementById(inputId)?.click();
+            }}
+            className="mt-2 bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700"
+          >
+            重新嘗試
+          </button>
+        </div>
       )}
     </div>
   );
