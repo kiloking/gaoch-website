@@ -162,7 +162,7 @@ export function ImageUploadButton({
     } catch (error) {
       console.error("Upload error:", error);
       toast.error(
-        `圖片上傳失敗: ${error instanceof Error ? error.message : "未知錯誤"}`
+        `圖片上傳失敗: ${error instanceof Error ? error.message : error}`
       );
     } finally {
       setIsUploading(false);
