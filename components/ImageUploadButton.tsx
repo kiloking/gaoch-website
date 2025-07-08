@@ -38,6 +38,7 @@ export function ImageUploadButton({
       setUploadedImage("");
       onImagesChange("", undefined);
       setErrorMessage("");
+      console.log(errorMessage);
     }
   }, [reset, onImagesChange]);
   const getSignedUrl = api.upload.getSignedUrl.useMutation();
