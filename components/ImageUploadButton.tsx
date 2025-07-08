@@ -74,6 +74,11 @@ export function ImageUploadButton({
       console.error("壓縮失敗:", error);
       // 如果壓縮失敗，返回原始檔案
       console.log("Using original file due to compression failure");
+      console.log("File info:", {
+        fileSize: file.size,
+        fileType: file.type,
+        fileName: file.name,
+      });
       return file;
     }
   };
