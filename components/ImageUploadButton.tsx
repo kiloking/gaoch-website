@@ -268,25 +268,6 @@ export function ImageUploadButton({
           </CardContent>
         </Card>
       )}
-
-      {errorMessage && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-2">
-          <div className="text-red-800 text-sm font-medium mb-1">上傳失敗</div>
-          <div className="text-red-600 text-xs">{errorMessage}</div>
-          <div className="text-red-500 text-xs mt-1">
-            請檢查網路連線或稍後再試
-          </div>
-          <button
-            onClick={() => {
-              setErrorMessage("");
-              document.getElementById(inputId)?.click();
-            }}
-            className="mt-2 bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700"
-          >
-            重新嘗試
-          </button>
-        </div>
-      )}
     </div>
   );
 }
