@@ -120,6 +120,7 @@ export function ImageUploadButton({
       if (error) {
         toast.error(error);
         setErrorMessage(error);
+        console.log("error", error);
         return;
       }
 
