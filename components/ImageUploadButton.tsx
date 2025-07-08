@@ -49,14 +49,32 @@ export function ImageUploadButton({
       maxWidthOrHeight: composeSize ? composeSize : 1920, // 最大寬度或高度
       useWebWorker: false, // 在手機上禁用 Web Worker，避免兼容性問題
       fileType: file.type, // 保持原始檔案類型
+      onProgress: (progress: number) => {
+        console.log("Compression progress:", progress);
+      },
     };
 
     try {
+      console.log(
+        "Starting compression for file:",
+        file.name,
+        "size:",
+        file.size
+      );
       const compressedFile = await imageCompression(file, options);
+      console.log("Compression successful:", {
+        originalSize: file.size,
+        compressedSize: compressedFile.size,
+        compressionRatio:
+          (((file.size - compressedFile.size) / file.size) * 100).toFixed(2) +
+          "%",
+      });
       return compressedFile;
     } catch (error) {
       console.error("壓縮失敗:", error);
-      throw error;
+      // 如果壓縮失敗，返回原始檔案
+      console.log("Using original file due to compression failure");
+      return file;
     }
   };
 
@@ -102,7 +120,7 @@ export function ImageUploadButton({
 
       // 壓縮圖片
       const imageName = generateImageName();
-      let compressedFile;
+      let compressedFile = file; // 預設使用原始檔案
 
       try {
         compressedFile = await compressImage(file);
@@ -115,8 +133,7 @@ export function ImageUploadButton({
         });
       } catch (compressError) {
         console.error("壓縮失敗，使用原始檔案:", compressError);
-        // 如果壓縮失敗，使用原始檔案
-        compressedFile = file;
+        // 壓縮失敗時使用原始檔案
       }
 
       const size = compressedFile.size;
@@ -153,7 +170,7 @@ export function ImageUploadButton({
 
       // 創建圖片記錄
       const createPayload = {
-        url: "https://web.forestdev.work/goach/upload/" + imageName,
+        url: "https://web.forestdev.work/web/goach/upload/" + imageName,
         name: imageName,
       };
       const imageResult = await createImage.mutateAsync(createPayload);
