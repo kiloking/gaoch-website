@@ -21,8 +21,9 @@ export default function RepairDetail() {
   if (!repair) return <div>找不到此維修單</div>;
 
   return (
-    <div className="w-11/12 mx-auto p-4 flex justify-center ">
-      <div className=" min-h-[297mm] bg-white   my-4">
+    <div className="w-11/12 mx-auto p-4  justify-center print:w-full">
+      {/* 第一頁：主要內容 */}
+      <div className="min-h-[200mm] bg-white my-4 print:break-after-page print:break-inside-avoid">
         {/* 標題和編號 */}
         <div className="text-center mb-4 flex justify-center items-center gap-4 relative">
           <h1 className="text-2xl font-bold">維修申請單</h1>
@@ -35,57 +36,58 @@ export default function RepairDetail() {
             </button>
           </div>
           <div className="flex gap-4 justify-between absolute top-0 right-0">
-            <div className="  border border-black p-2">
-              <span>編號：{repair.serial_no}</span>
+            <div className="border border-black p-2">
+              <span className="whitespace-nowrap">
+                編號：{repair.serial_no}
+              </span>
             </div>
           </div>
         </div>
 
         {/* 基本資訊表格 */}
-
         <div className="border border-black">
           <div className="grid grid-cols-12 border-b border-black">
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>填單日</div>
+              <div className="whitespace-nowrap">填單日</div>
               <div>{repair.date}</div>
             </div>
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>聯絡人</div>
+              <div className="whitespace-nowrap">聯絡人</div>
               <div>{repair.contactName}</div>
             </div>
             <div className="col-span-4 p-2 flex justify-start items-center gap-2">
-              <div>社區</div>
+              <div className="whitespace-nowrap">社區</div>
               <div>{repair.community_name}</div>
             </div>
           </div>
           <div className="grid grid-cols-12 border-b border-black">
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>方便聯絡時間</div>
+              <div className="whitespace-nowrap">方便聯絡時間</div>
               <div>{repair.contact_time}</div>
             </div>
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>Email</div>
+              <div className="whitespace-nowrap">Email</div>
               <div>{repair.email}</div>
             </div>
             <div className="col-span-4 p-2 flex justify-start items-center gap-2">
-              <div>聯絡電話</div>
+              <div className="whitespace-nowrap">聯絡電話</div>
               <div>{repair.phone}</div>
             </div>
           </div>
 
           <div className="grid grid-cols-12 border-b border-black">
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>戶別</div>
+              <div className="whitespace-nowrap">戶別</div>
               <div>{repair.unit}</div>
             </div>
             <div className="col-span-4 p-2 border-r border-black flex justify-start items-center gap-2">
-              <div>區域 / 類型</div>
+              <div className="whitespace-nowrap">區域 / 類型</div>
               <div>
                 {repair.repair_area} / {repair.repair_class}
               </div>
             </div>
             <div className="col-span-4 p-2 flex justify-start items-center gap-2">
-              <div>附件</div>
+              <div className="whitespace-nowrap">附件</div>
               <div>
                 圖片 {repair.images.length} 件 / 影片{" "}
                 {repair.videoId ? "1" : "0"} 件
@@ -96,20 +98,10 @@ export default function RepairDetail() {
           {/* 維修內容 */}
           <div className="p-2">
             <div className="flex justify-start items-center gap-2 mb-4">
-              <div className=" ">維修內容：</div>
+              <div className="">維修內容：</div>
               <div className="whitespace-pre-wrap">{repair.content}</div>
             </div>
-
-            <div className="flex flex-wrap gap-2 min-h-[50px] ">
-              {repair.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image.url}
-                  alt="維修圖片"
-                  className="max-w-[100px] max-h-[180px] object-contain"
-                />
-              ))}
-            </div>
+            {/* 移除圖片，圖片將在第二頁顯示 */}
           </div>
 
           {/* 簽名欄 */}
@@ -118,7 +110,7 @@ export default function RepairDetail() {
               <div>修繕人員：</div>
               <div className="min-h-[1px]"></div>
             </div>
-            <div className="p-4 flex  justify-between">
+            <div className="p-4 flex justify-between">
               <div className="">受理人員：</div>
               <div>受理日：＿＿年＿＿月＿＿日</div>
             </div>
@@ -149,7 +141,6 @@ export default function RepairDetail() {
               </div>
             </div>
             <div className="col-span-2 p-2 border-b border-black">
-              {" "}
               <span>預計完成日期</span>
             </div>
 
@@ -186,8 +177,6 @@ export default function RepairDetail() {
               修繕人員
             </div>
           </div>
-
-          {/* PS 註記 */}
         </div>
         <div className="text-xs text-blue-800 p-2">
           PS 責任歸屬分業主客戶公司及承包商四種
@@ -218,21 +207,21 @@ export default function RepairDetail() {
                 結案流程
               </div>
               <div className="grid grid-cols-4 border-b border-black">
-                <div className="p-2 border-r  border-black ">
+                <div className="p-2 border-r border-black">
                   <div className="text-center text-sm">總經理室建檔</div>
                 </div>
-                <div className="p-2 border-r  border-black">
+                <div className="p-2 border-r border-black">
                   <div className="text-center text-sm">副總經理</div>
                 </div>
-                <div className="p-2 border-r  border-black">
+                <div className="p-2 border-r border-black">
                   <div className="text-center text-sm">工務部主管會簽</div>
                 </div>
                 <div className="p-2">
                   <div className="text-center text-sm">業主</div>
                 </div>
               </div>
-              <div className="grid grid-cols-4 ">
-                <div className="p-4 border-r border-black "></div>
+              <div className="grid grid-cols-4">
+                <div className="p-4 border-r border-black"></div>
                 <div className="p-4 border-r border-black"></div>
                 <div className="p-4 border-r border-black"></div>
                 <div className="p-4"></div>
@@ -245,7 +234,7 @@ export default function RepairDetail() {
                 驗收流程
               </div>
               <div className="grid grid-cols-2 border-b border-black">
-                <div className="p-2 border-r  border-black ">
+                <div className="p-2 border-r border-black">
                   <div className="text-center text-sm">客戶簽字/評語</div>
                 </div>
                 <div className="p-2">
@@ -253,17 +242,55 @@ export default function RepairDetail() {
                 </div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="p-4 border-r border-black">
-                  {/* <div className="text-sm">客戶簽字：</div> */}
-                </div>
+                <div className="p-4 border-r border-black"></div>
                 <div className="p-4"></div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* 列印按鈕 */}
       </div>
+
+      {/* 第二頁：圖片附件 */}
+      {repair.images.length > 0 && (
+        <>
+          {/* 螢幕顯示時的分頁指示器 */}
+
+          <div className="min-h-[200mm] bg-white my-4 print:break-before-page print:break-inside-avoid">
+            {/* 第二頁標題和編號 */}
+            <div className="text-center mb-4 flex justify-center items-center gap-4 relative">
+              <h1 className="text-2xl font-bold">維修申請單 - 附件</h1>
+              <div className="flex gap-4 justify-between absolute top-0 right-0">
+                <div className="border border-black p-2">
+                  <span>編號：{repair.serial_no}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 圖片區域 */}
+            <div className="border border-black">
+              <div className="text-center p-2 font-bold border-b border-black">
+                維修現場照片
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-1 gap-4">
+                  {repair.images.map((image, index) => (
+                    <div key={index} className="border border-gray-300 p-2">
+                      <div className="text-center text-sm text-gray-600 mb-2">
+                        照片 {index + 1}
+                      </div>
+                      <img
+                        src={image.url}
+                        alt={`維修圖片 ${index + 1}`}
+                        className="w-full h-auto max-h-[330px] object-contain mx-auto"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
