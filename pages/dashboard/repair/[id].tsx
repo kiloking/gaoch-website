@@ -126,10 +126,10 @@ export default function RepairDetail() {
           {/* 表格內容 */}
           <div className="grid grid-cols-12 text-sm">
             {/* 表頭 */}
-            <div className="col-span-3 p-2 border-b border-r border-black">
+            <div className="col-span-5 p-2  border-r border-black">
               現場會勘結果
             </div>
-            <div className="col-span-3 p-2 border-b border-r border-black">
+            <div className="col-span-1 p-2 border-b border-r border-black">
               責任歸屬級數
             </div>
             <div className="col-span-2 p-2 border-b border-r border-black">
@@ -147,8 +147,8 @@ export default function RepairDetail() {
             {/* 表格主體 - 6行 */}
             {[...Array(1)].map((_, index) => (
               <React.Fragment key={index}>
-                <div className="col-span-3 p-2 border-b border-r border-black min-h-[40px]"></div>
-                <div className="col-span-3 p-2 border-b border-r border-black"></div>
+                <div className="col-span-5 p-2 border-b border-r border-black min-h-[100px]"></div>
+                <div className="col-span-1 p-2 border-b border-r border-black"></div>
                 <div className="col-span-2 p-2 border-b border-r border-black"></div>
                 <div className="col-span-2 p-2 border-b border-r border-black">
                   <div className="flex justify-center gap-5">
@@ -196,7 +196,7 @@ export default function RepairDetail() {
           {/* 維修情形及結果 */}
           <div className="p-4 border-b border-black">
             <div>2. 維修情形及結果：</div>
-            <div className="min-h-[1px]"></div>
+            <div className="min-h-[100px]"></div>
           </div>
 
           {/* 簽核表格 */}

@@ -450,7 +450,7 @@ Email：${formData.email}
                     <input
                       type="text"
                       required
-                      placeholder="e.g. A棟-1F-1號"
+                      placeholder="e.g. A1-01F"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
                       value={formData.unit}
                       onChange={(e) => handleFormChange("unit", e.target.value)}
