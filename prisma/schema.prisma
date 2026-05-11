@@ -164,3 +164,149 @@ model UserRole {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// 無障礙資訊平台相關模型
+enum PlaceCategory {
+  RESTAURANT
+  HOTEL
+  ATTRACTION
+  TRANSPORTATION
+  SHOPPING
+  MEDICAL
+  EDUCATION
+  OTHER
+}
+
+enum UserType {
+  DISABLED_PERSON
+  CAREGIVER
+  FAMILY_MEMBER
+  GENERAL_USER
+}
+
+model Place {
+  id                    Int             @id @default(autoincrement())
+  name                  String
+  category              PlaceCategory
+  address               String
+  city                  String
+  country               String          @default("台灣")
+  latitude              Float?
+  longitude             Float?
+  
+  // 餐廳相關
+  tablesHeight          Int?            // 桌子高度 (cm)
+  aisleWidth            Int?            // 走道寬度 (cm)
+  hasAccessibleToilet   Boolean         @default(false)
+  canReserve            Boolean         @default(false)
+  
+  // 飯店相關
+  accessibleRooms       Int?            // 無障礙房數量
+  hasShowerChair        Boolean         @default(false)
+  bathroomSize          Int?            // 浴室大小 (平方公尺)
+  stepHeight            Int?            // 門檻高度 (cm)
+  
+  // 景點相關
+  hasElevator           Boolean         @default(false)
+  hasRamp               Boolean         @default(false)
+  wheelchairAccessible  Boolean         @default(false)
+  
+  // 交通相關
+  hasAccessibleStation  Boolean         @default(false)
+  hasAccessibleBus      Boolean         @default(false)
+  
+  // 通用資訊
+  phone                 String?
+  website               String?
+  openingHours          String?
+  description           String?
+  
+  // 關聯
+  reviews               Review[]
+  images                PlaceImage[]
+  tags                  PlaceTag[]
+  
+  // 系統欄位
+  isVerified            Boolean         @default(false)
+  isActive              Boolean         @default(true)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
+
+model Review {
+  id                    Int             @id @default(autoincrement())
+  content               String
+  rating                Int             // 1-5 星評分
+  accessibilityRating   Int             // 無障礙友善度評分 1-5
+  
+  // 詳細評分
+  entranceRating        Int?            // 入口友善度
+  toiletRating          Int?            // 廁所友善度
+  staffRating           Int?            // 員工友善度
+  overallRating         Int?            // 整體體驗
+  
+  // 照片和標籤
+  photoUrls             String[]        // 照片 URL 陣列
+  tags                  String[]        // 標籤陣列 (如: "走道太窄", "有洗澡椅", "員工友善")
+  
+  // 關聯
+  user                  User            @relation(fields: [userId], references: [id])
+  userId                String
+  place                 Place           @relation(fields: [placeId], references: [id])
+  placeId               Int
+  
+  // 系統欄位
+  isVerified            Boolean         @default(false)
+  isActive              Boolean         @default(true)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
+
+model PlaceImage {
+  id                    Int             @id @default(autoincrement())
+  url                   String
+  caption               String?
+  isMain                Boolean         @default(false)
+  
+  place                 Place           @relation(fields: [placeId], references: [id])
+  placeId               Int
+  
+  createdAt             DateTime        @default(now())
+}
+
+model PlaceTag {
+  id                    Int             @id @default(autoincrement())
+  name                  String          @unique
+  description           String?
+  color                 String?         // 標籤顏色
+  
+  places                Place[]
+  
+  createdAt             DateTime        @default(now())
+}
+
+// 擴展現有的 User 模型
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  password      String
+  role          String    @default("user")
+  isActive      Boolean   @default(true)
+  email         String?
+  displayName   String?
+  
+  // 新增無障礙平台相關欄位
+  userType      UserType? // 使用者類型
+  disabilityType String?  // 障礙類型
+  bio           String?   // 個人簡介
+  avatar        String?   // 頭像 URL
+  points        Int       @default(0)  // 積分系統
+  
+  // 關聯
+  accounts      Account[]
+  sessions      Session[]
+  reviews       Review[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}

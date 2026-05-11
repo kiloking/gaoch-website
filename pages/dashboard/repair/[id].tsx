@@ -9,7 +9,7 @@ export default function RepairDetail() {
     id as string,
     {
       enabled: !!id,
-    }
+    },
   );
 
   if (isLoading)
@@ -178,7 +178,7 @@ export default function RepairDetail() {
             </div>
           </div>
         </div>
-        <div className="text-xs text-blue-800 p-2">
+        <div className="text-xs  p-2">
           PS 責任歸屬分業主客戶公司及承包商四種
         </div>
 

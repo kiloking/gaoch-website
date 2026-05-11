@@ -12,12 +12,28 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { RepairListType } from "@/types/types";
 
+/** 列表狀態過濾選項（與後台 / DB 狀態字串一致） */
+const REPAIR_STATUS_FILTERS = ["待處理", "處理中", "已完成"] as const;
+type RepairStatusFilterKey = (typeof REPAIR_STATUS_FILTERS)[number];
+
+const defaultStatusFilter: Record<RepairStatusFilterKey, boolean> = {
+  待處理: true,
+  處理中: true,
+  已完成: false,
+};
+
+function isRepairFilterStatus(s: string): s is RepairStatusFilterKey {
+  return (REPAIR_STATUS_FILTERS as readonly string[]).includes(s);
+}
+
 export function RepairList() {
   const [selectedRepair, setSelectedRepair] = useState<RepairListType | null>(
     null
   );
   const [editStatus, setEditStatus] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] =
+    useState<Record<RepairStatusFilterKey, boolean>>(defaultStatusFilter);
 
   const utils = api.useUtils();
   const { data: repairsData, isLoading } = api.repair.getAll.useQuery();
@@ -40,24 +56,30 @@ export function RepairList() {
     }
   };
 
-  const filteredRepairs = useMemo(
-    () =>
-      repairsData?.filter(
-        (repair) =>
-          repair.unit.includes(searchTerm) ||
-          repair.contactName.includes(searchTerm) ||
-          repair.content.includes(searchTerm) ||
-          repair.id.toString().includes(searchTerm)
-      ),
-    [repairsData, searchTerm]
-  );
+  const filteredRepairs = useMemo(() => {
+    if (!repairsData) return undefined;
+    return repairsData.filter((repair) => {
+      const statusVisible = isRepairFilterStatus(repair.status)
+        ? statusFilter[repair.status]
+        : true;
+
+      if (!statusVisible) return false;
+
+      return (
+        repair.unit.includes(searchTerm) ||
+        repair.contactName.includes(searchTerm) ||
+        repair.content.includes(searchTerm) ||
+        repair.id.toString().includes(searchTerm)
+      );
+    });
+  }, [repairsData, searchTerm, statusFilter]);
 
   return (
     <div className="container mx-auto p-4">
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-4">維修申請列表</h1>
 
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
           <input
             type="text"
             placeholder="搜尋維修單（戶別、聯絡人、內容、編號）"
@@ -65,6 +87,25 @@ export function RepairList() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-700">
+            <span className="font-medium text-gray-900">狀態：</span>
+            {REPAIR_STATUS_FILTERS.map((key) => (
+              <label
+                key={key}
+                className="inline-flex cursor-pointer items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  checked={statusFilter[key]}
+                  onChange={() =>
+                    setStatusFilter((prev) => ({ ...prev, [key]: !prev[key] }))
+                  }
+                />
+                <span>{key}</span>
+              </label>
+            ))}
+          </div>
         </div>
 
         {isLoading ? (
